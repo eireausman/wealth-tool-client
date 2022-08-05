@@ -49,7 +49,7 @@ const Login: React.FC = () => {
         />
       </label>
       <label>
-        Password
+        Password 12345678
         <input
           name="password"
           minLength={PASSWORDMIN}

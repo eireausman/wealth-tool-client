@@ -28,4 +28,28 @@ const getCashAccountData = async () => {
   }
 };
 
-export { createAccountAttempt, loginAttempt, getCashAccountData };
+const updateCashAccountBalance = async (
+  account_id: number,
+  balance: number
+) => {
+  const formData = {
+    account_id,
+    balance,
+  };
+  try {
+    const serverResponse = await axios.post(
+      "/api/updatecashaccountbalance",
+      formData
+    );
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export {
+  createAccountAttempt,
+  loginAttempt,
+  getCashAccountData,
+  updateCashAccountBalance,
+};
