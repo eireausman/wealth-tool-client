@@ -4,6 +4,15 @@ export interface createAccountFormData {
   password?: string;
 }
 
+export interface cashAccountAPIData {
+  [key: string]: string | number | undefined;
+  account_currency: string;
+  account_id: number;
+  account_nickname: string;
+  account_owner_name: string;
+  userUsersId: number;
+}
+
 export interface LoginAttemptFormData {
   [key: string]: string | undefined;
   username?: string;

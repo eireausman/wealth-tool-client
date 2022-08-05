@@ -19,4 +19,13 @@ const loginAttempt = async (formData: createAccountFormData) => {
   }
 };
 
-export { createAccountAttempt, loginAttempt };
+const getCashAccountData = async () => {
+  try {
+    const serverResponse = await axios.get("/api/getcashaccountdata");
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export { createAccountAttempt, loginAttempt, getCashAccountData };
