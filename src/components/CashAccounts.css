@@ -1,0 +1,33 @@
+.accountNickname {
+  font-weight: bolder;
+}
+
+.accountOwner {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.accountCurrency {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.accountValue {
+  cursor: pointer;
+  font-weight: bolder;
+  margin: 0px 4px 0px 0px;
+}
+
+.editValueIcon {
+  height: 11px;
+  width: 11px;
+  cursor: pointer;
+}
+
+.currentValueText {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}

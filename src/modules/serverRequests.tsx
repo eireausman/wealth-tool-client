@@ -19,6 +19,15 @@ const loginAttempt = async (formData: createAccountFormData) => {
   }
 };
 
+const getPropertiesData = async () => {
+  try {
+    const serverResponse = await axios.get("/api/getpropertiesdata");
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const getCashAccountData = async () => {
   try {
     const serverResponse = await axios.get("/api/getcashaccountdata");
@@ -52,4 +61,5 @@ export {
   loginAttempt,
   getCashAccountData,
   updateCashAccountBalance,
+  getPropertiesData,
 };

@@ -1,0 +1,13 @@
+.editAccountBalForm {
+  display: flex;
+  flex-direction: column;
+}
+.newAccountBalanceInputBox {
+  padding: 4px;
+  border-radius: 5px;
+  border-width: thin;
+  border-color: #fff;
+}
+
+.displayEditedBalance {
+}

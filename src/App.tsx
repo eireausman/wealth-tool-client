@@ -1,8 +1,14 @@
 import React from "react";
-import "./App.css";
+import CashAccounts from "./components/CashAccounts";
+import Properties from "./components/Properties";
 
 function App() {
-  return <div className="App">this</div>;
+  return (
+    <div className="viewCardsCascade">
+      <Properties />
+      <CashAccounts />
+    </div>
+  );
 }
 
 export default App;
