@@ -19,6 +19,29 @@ const loginAttempt = async (formData: createAccountFormData) => {
   }
 };
 
+const getCurrencyCodeData = async () => {
+  try {
+    const serverResponse = await axios.get("/api/getcurrencycodes");
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getCurrencyFXData = async (currencyFrom: string, currencyTo: string) => {
+  const formData = {
+    currencyFrom,
+    currencyTo,
+  };
+  try {
+    const serverResponse = await axios.post("/api/getfxrates", formData);
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const getPropertiesData = async () => {
   try {
     const serverResponse = await axios.get("/api/getpropertiesdata");
@@ -62,4 +85,6 @@ export {
   getCashAccountData,
   updateCashAccountBalance,
   getPropertiesData,
+  getCurrencyFXData,
+  getCurrencyCodeData,
 };

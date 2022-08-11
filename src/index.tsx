@@ -18,8 +18,6 @@ root.render(
         <Route path="/" element={<App />} />
         <Route path="/createaccount" element={<CreateAccount />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/cashaccounts" element={<CashAccounts />} />
-        <Route path="/properties" element={<Properties />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

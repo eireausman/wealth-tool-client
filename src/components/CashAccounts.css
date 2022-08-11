@@ -31,3 +31,9 @@
   margin-top: 2px;
   font-size: 0.8rem;
 }
+
+.calculatedBalanceValue {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}

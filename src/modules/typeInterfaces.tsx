@@ -6,12 +6,39 @@ export interface createAccountFormData {
 
 export interface cashAccountAPIData {
   [key: string]: string | number | undefined;
-  account_currency: string;
+  account_currency_code: string;
+  account_currency_symbol: string;
   account_id: number;
   account_nickname: string;
   account_owner_name: string;
   userUsersId: number;
   account_balance: number;
+  displayValue: number;
+}
+
+export interface currencyCodesAPIData {
+  currency_code: string;
+  currency_name: string;
+  currency_symbol: string;
+  id: number;
+}
+
+export interface currencyFXAPIData {
+  id: number;
+  currency_code_from: string;
+  currency_code_from_symbol: string;
+  currency_code_to: string;
+  currency_code_to_symbol: string;
+  currency_fxrate: string;
+  currency_fxrate_dateupdated: string;
+}
+
+export interface CashAccountsProps {
+  selectedCurrency: string;
+}
+
+export interface PropertiesProps {
+  selectedCurrency: string;
 }
 
 export interface propertiesAPIData {
@@ -45,4 +72,10 @@ export interface createAccountServerResponse {
 export interface LoginAttemptServerResponse {
   requestOutcome?: boolean;
   message?: string;
+}
+
+export interface OptionsBoardProps {
+  selectedCurrency: string;
+  setselectedCurrency: React.Dispatch<React.SetStateAction<string>>;
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
 }

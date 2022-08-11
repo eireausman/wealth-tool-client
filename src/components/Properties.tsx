@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { propertiesAPIData } from "../modules/typeInterfaces";
+import { propertiesAPIData, PropertiesProps } from "../modules/typeInterfaces";
 import { getPropertiesData } from "../modules/serverRequests";
 
-const Properties = () => {
+const Properties: React.FC<PropertiesProps> = ({ selectedCurrency }) => {
   const [propertiesAPIData, setPropertiesAPIData] =
     useState<Array<propertiesAPIData>>();
 
