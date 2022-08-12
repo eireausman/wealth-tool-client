@@ -1,16 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { OptionsBoardProps } from "../modules/typeInterfaces";
 
 const OptionsBoard: React.FC<OptionsBoardProps> = ({
-  selectedCurrency,
-  setselectedCurrency,
+  selectedCurrencyCode: selectedCurrency,
+  setselectedCurrencyCode,
   currencyCodesFromDB,
+  setselectedCurrencySymbol,
 }) => {
   const setCurrency = (e: React.FormEvent<EventTarget>) => {
     const target = e.target as HTMLSelectElement;
-    setselectedCurrency(target.value!);
-    localStorage.setItem("selectedCurrency", target.value!);
-    console.log(currencyCodesFromDB);
+    // const targetKey = target.value as keyof typeof currencyCodesFromDB;
+    currencyCodesFromDB?.forEach((item) => {
+      if (item.currency_code === target.value!) {
+        setselectedCurrencyCode(item.currency_code);
+        setselectedCurrencySymbol(item.currency_symbol);
+        localStorage.setItem("selectedCurrencyCode", item.currency_code);
+        localStorage.setItem("selectedCurrencySymbol", item.currency_symbol);
+      }
+    });
   };
 
   return (

@@ -1,0 +1,52 @@
+.calculatedBalanceValue {
+  font-weight: bolder;
+  margin: 2px 4px 0px 0px;
+}
+
+.underNetTexts {
+  font-weight: unset;
+  margin-top: 0px;
+  font-size: 0.8rem;
+}
+
+.ownerText {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.propertyName {
+  font-weight: bolder;
+  margin: 2px 4px 0px 0px;
+}
+
+.valueBaseCurrency {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.valueBaseCurrency {
+  font-weight: unset;
+  margin-top: 5px;
+  font-size: 0.8rem;
+}
+
+.loanValueBaseCurrency {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+.netValueBaseCurrency {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.currentValueText {
+  margin: 2px 4px 0px 0px;
+}
+
+.PropertyCardRow {
+  cursor: pointer;
+}

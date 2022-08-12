@@ -40,7 +40,6 @@ code {
   flex-direction: column;
   align-items: center;
   background-color: #087fed;
-
   border-radius: 10px;
   padding: 10px;
   margin: 20px;
@@ -73,8 +72,9 @@ h4 {
 .buttonPrimary {
   border: 0px;
   padding: 5px;
-  background-color: rgb(75, 166, 246);
+  background-color: rgb(28, 135, 235);
   color: white;
+  cursor: pointer;
 }
 
 .viewCardRow {

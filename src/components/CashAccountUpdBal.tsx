@@ -1,36 +1,43 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { updateCashAccountBalance } from "../modules/serverRequests";
 import { CashAccountUpdateBalProps } from "../modules/typeInterfaces";
 import "./CashAccountUpdBal.css";
+import { motion } from "framer-motion";
 
 const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
-  editThisAccountBalanceValue,
   setAccountIDToEdit,
   updatedAllAccountBalances,
-  accountToEditCurBal,
+  editAccountDetail,
+  seteditAccountDetail,
 }) => {
-  const [editedAccountBalance, setEditedAccountBalance] =
-    useState<number>(accountToEditCurBal);
+  useEffect(() => {
+    newAccountBalanceInputBox.current !== null &&
+      newAccountBalanceInputBox.current.focus();
+    console.log(editAccountDetail);
+  }, []);
 
   const newAccountBalance = (e: React.FormEvent<EventTarget>) => {
+    console.log();
     const target = e.target as HTMLInputElement;
     const number = parseInt(target.value);
-    setEditedAccountBalance(number);
+    const editAccountDetailCopy = { ...editAccountDetail };
+    editAccountDetailCopy.account_balance = number;
+    seteditAccountDetail(editAccountDetailCopy);
+  };
+
+  const cancelForm = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault();
+    setAccountIDToEdit(-1);
   };
 
   const newAccountBalanceInputBox = useRef<HTMLInputElement | null>(null);
 
-  useEffect(() => {
-    newAccountBalanceInputBox.current !== null &&
-      newAccountBalanceInputBox.current.focus();
-  }, []);
-
   const saveNewAccountBalance = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    console.log(editedAccountBalance);
+    console.log(editAccountDetail.account_balance);
     updateCashAccountBalance(
-      editThisAccountBalanceValue!,
-      editedAccountBalance!
+      editAccountDetail.account_id!,
+      editAccountDetail.account_balance!
     )
       .then((data) => {
         updatedAllAccountBalances();
@@ -40,23 +47,46 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
   };
 
   return (
-    <form className="editAccountBalForm" onSubmit={saveNewAccountBalance}>
-      <input
-        name="newAccountBalanceInputBox"
-        className="newAccountBalanceInputBox"
-        type="number"
-        ref={newAccountBalanceInputBox}
-        value={editedAccountBalance}
-        onChange={newAccountBalance}
-        required
-      />
-      <span className="displayEditedBalance">
-        {editedAccountBalance.toLocaleString("en-US")}
+    <motion.form
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="editAccountBalForm"
+      onSubmit={saveNewAccountBalance}
+    >
+      <span className="accountNickname">
+        {editAccountDetail.account_nickname}
       </span>
-      <button type="submit">
-        Save as {editedAccountBalance.toLocaleString("en-US")}
-      </button>
-    </form>
+      <div className="currencySymbolWrapper">
+        {editAccountDetail.currencySymbol}
+        <input
+          name="newAccountBalanceInputBox"
+          className="newAccountBalanceInputBox"
+          type="number"
+          ref={newAccountBalanceInputBox}
+          value={editAccountDetail.account_balance}
+          onChange={newAccountBalance}
+          required
+        />
+
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.8 }}
+          className="buttonPrimary buttonCashBalSave"
+          type="submit"
+        >
+          Save
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.8 }}
+          className="buttonPrimary buttonCashBalSave"
+          onClick={cancelForm}
+        >
+          Cancel
+        </motion.button>
+      </div>
+    </motion.form>
   );
 };
 

@@ -1,3 +1,5 @@
+import { StringLiteral } from "typescript";
+
 export interface createAccountFormData {
   [key: string]: string | undefined;
   username?: string;
@@ -34,11 +36,29 @@ export interface currencyFXAPIData {
 }
 
 export interface CashAccountsProps {
-  selectedCurrency: string;
+  selectedCurrencyCode: string;
+  selectedCurrencySymbol: string;
+}
+
+export interface editAccountDetail {
+  account_id: number;
+  account_balance: number;
+  currencySymbol: string;
+  currencyCode: string;
+  account_nickname: string;
 }
 
 export interface PropertiesProps {
-  selectedCurrency: string;
+  selectedCurrencyCode: string;
+  selectedCurrencySymbol: string;
+}
+
+export interface editingPropertyDetails {
+  property_id: number;
+  property_nickname: string;
+  property_valuation: number;
+  property_loan_value: number;
+  property_valuation_curr_symbol: string;
 }
 
 export interface propertiesAPIData {
@@ -49,13 +69,22 @@ export interface propertiesAPIData {
   property_valuation: number;
   property_loan_value: number;
   property_valuation_currency: string;
+  property_valuation_curr_symbol: string;
+  displayValue: number;
+}
+
+export interface propertiesUpdateValProps {
+  editingPropertyDetails: editingPropertyDetails | undefined;
+  refreshPropertiesValues: () => Promise<void>;
 }
 
 export interface CashAccountUpdateBalProps {
-  editThisAccountBalanceValue: number;
   setAccountIDToEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
   updatedAllAccountBalances: () => void;
-  accountToEditCurBal: number;
+  editAccountDetail: editAccountDetail;
+  seteditAccountDetail: React.Dispatch<
+    React.SetStateAction<editAccountDetail | undefined>
+  >;
 }
 
 export interface LoginAttemptFormData {
@@ -75,7 +104,8 @@ export interface LoginAttemptServerResponse {
 }
 
 export interface OptionsBoardProps {
-  selectedCurrency: string;
-  setselectedCurrency: React.Dispatch<React.SetStateAction<string>>;
+  selectedCurrencyCode: string;
+  setselectedCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  setselectedCurrencySymbol: React.Dispatch<React.SetStateAction<string>>;
 }

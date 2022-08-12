@@ -1,13 +1,32 @@
-.editAccountBalForm {
-  display: flex;
-  flex-direction: column;
-}
-.newAccountBalanceInputBox {
-  padding: 4px;
-  border-radius: 5px;
-  border-width: thin;
-  border-color: #fff;
+.accountNickname {
+  font-weight: bolder;
 }
 
-.displayEditedBalance {
+.buttonCashBalSave {
+  margin: 0px 0px 0px 10px;
+  border-radius: 10px;
+}
+.editAccountBalForm {
+  display: flex;
+  padding: 10px;
+  flex-direction: column;
+  width: 80%;
+}
+
+.currencySymbolWrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.newAccountBalanceInputBox {
+  display: flex;
+  background: transparent;
+  padding: 4px;
+  border-radius: 7px;
+  border-width: thin;
+  border-color: rgb(75, 166, 246);
+  margin: 0px 0px 0px 5px;
 }

@@ -14,26 +14,33 @@
   font-size: 0.8rem;
 }
 
-.accountValue {
+.accountValueBaseCurrency {
+  font-weight: unset;
+  margin-top: 2px;
+  font-size: 0.8rem;
+}
+
+.baseCurrencyWrapperDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   cursor: pointer;
-  font-weight: bolder;
-  margin: 0px 4px 0px 0px;
+  border-radius: 5px;
 }
 
 .editValueIcon {
   height: 11px;
   width: 11px;
-  cursor: pointer;
+  margin: 0px 0px 0px 3px;
 }
 
 .currentValueText {
   font-weight: unset;
-  margin-top: 2px;
+  margin-top: 0px;
   font-size: 0.8rem;
 }
 
 .calculatedBalanceValue {
-  font-weight: unset;
-  margin-top: 2px;
-  font-size: 0.8rem;
+  font-weight: bolder;
+  margin: 2px 4px 0px 0px;
 }

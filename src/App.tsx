@@ -6,16 +6,26 @@ import { currencyCodesAPIData } from "./modules/typeInterfaces";
 import { getCurrencyCodeData } from "./modules/serverRequests";
 
 import {} from "./modules/serverRequests";
+import ChartExample from "./components/ChartExample";
 
 function App() {
-  const [selectedCurrency, setselectedCurrency] = useState<string>("AUD");
+  const [selectedCurrencyCode, setselectedCurrencyCode] =
+    useState<string>("AUD");
+  const [selectedCurrencySymbol, setselectedCurrencySymbol] =
+    useState<string>("$");
   const [currencyCodesFromDB, setcurrencyCodesFromDB] =
     useState<Array<currencyCodesAPIData>>();
 
   useEffect(() => {
-    const localStoreCurrency = localStorage.getItem("selectedCurrency");
-    if (localStoreCurrency !== null) {
-      setselectedCurrency(localStoreCurrency);
+    const localStoreCurrencyCode = localStorage.getItem("selectedCurrencyCode");
+    const localStoreCurrencySymbol = localStorage.getItem(
+      "selectedCurrencySymbol"
+    );
+    if (localStoreCurrencyCode !== null) {
+      setselectedCurrencyCode(localStoreCurrencyCode);
+    }
+    if (localStoreCurrencySymbol !== null) {
+      setselectedCurrencySymbol(localStoreCurrencySymbol);
     }
   }, []);
 
@@ -32,13 +42,21 @@ function App() {
   return (
     <Fragment>
       <OptionsBoard
-        selectedCurrency={selectedCurrency}
-        setselectedCurrency={setselectedCurrency}
+        selectedCurrencyCode={selectedCurrencyCode}
+        setselectedCurrencyCode={setselectedCurrencyCode}
         currencyCodesFromDB={currencyCodesFromDB}
+        setselectedCurrencySymbol={setselectedCurrencySymbol}
       />
       <div className="viewCardsCascade">
-        <Properties selectedCurrency={selectedCurrency} />
-        <CashAccounts selectedCurrency={selectedCurrency} />
+        <Properties
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+        />
+        <CashAccounts
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+        />
+        <ChartExample />
       </div>
     </Fragment>
   );
