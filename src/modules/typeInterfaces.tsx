@@ -74,7 +74,11 @@ export interface propertiesAPIData {
 }
 
 export interface propertiesUpdateValProps {
+  setpropertyToEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
   editingPropertyDetails: editingPropertyDetails | undefined;
+  seteditingPropertyDetails: React.Dispatch<
+    React.SetStateAction<editingPropertyDetails | undefined>
+  >;
   refreshPropertiesValues: () => Promise<void>;
 }
 

@@ -11,6 +11,7 @@ import "./CashAccounts.css";
 import editIcon from "../assets/images/edit.png";
 import currencyConvert from "../modules/currencyConvert";
 import CardSpinner from "./CardSpinner";
+import getDisplayNumber from "../modules/getDisplayNumber";
 
 const CashAccounts: React.FC<CashAccountsProps> = ({
   selectedCurrencyCode,
@@ -30,16 +31,13 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
     const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
     let TotalInSelectCurr: number = 0;
     for (let item of cashAcData) {
-      if (item.account_currency_code === selectedCurrencyCode) {
-        item.displayValue = item.account_balance;
-      } else {
-        const convertedValue = await currencyConvert(
-          item.account_balance,
-          item.account_currency_code,
-          selectedCurrencyCode
-        );
-        item.displayValue = await convertedValue;
-      }
+      const convertedValue = await currencyConvert(
+        item.account_balance,
+        item.account_currency_code,
+        selectedCurrencyCode
+      );
+      item.displayValue = await convertedValue;
+
       TotalInSelectCurr += item.displayValue;
     }
     setcashAccountsTotal(TotalInSelectCurr);
@@ -84,8 +82,7 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
           >
             <h3 className="viewCardHeading">CASH ACCOUNTS</h3>
             <h3 className="viewCardTotal">
-              {selectedCurrencySymbol}{" "}
-              {cashAccountsTotal.toLocaleString("en-US")}
+              {selectedCurrencySymbol} {getDisplayNumber(cashAccountsTotal)}
             </h3>
           </motion.div>
 
@@ -132,7 +129,7 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
                     >
                       <span className="accountValueBaseCurrency">
                         {data.account_currency_symbol}{" "}
-                        {data.account_balance.toLocaleString("en-US")}
+                        {getDisplayNumber(data.account_balance)}
                       </span>
                       <img
                         src={editIcon}
@@ -149,7 +146,7 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
                       </span>
                       <span className="calculatedBalanceValue">
                         {selectedCurrencySymbol}{" "}
-                        {data.displayValue.toLocaleString("en-US")}
+                        {getDisplayNumber(data.displayValue)}
                       </span>
                     </Fragment>
                   </div>

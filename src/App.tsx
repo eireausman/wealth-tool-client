@@ -10,9 +10,9 @@ import ChartExample from "./components/ChartExample";
 
 function App() {
   const [selectedCurrencyCode, setselectedCurrencyCode] =
-    useState<string>("AUD");
+    useState<string>("GBP");
   const [selectedCurrencySymbol, setselectedCurrencySymbol] =
-    useState<string>("$");
+    useState<string>("£");
   const [currencyCodesFromDB, setcurrencyCodesFromDB] =
     useState<Array<currencyCodesAPIData>>();
 

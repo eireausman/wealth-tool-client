@@ -6,6 +6,7 @@ const currencyConvert = async (
   currencyCodeFrom: string,
   currencyCodeTo: string
 ) => {
+  if (currencyCodeFrom === currencyCodeTo) return valueFrom;
   const serverResponse = await getCurrencyFXData(
     currencyCodeFrom,
     currencyCodeTo

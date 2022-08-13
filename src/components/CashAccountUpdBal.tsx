@@ -13,7 +13,6 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
   useEffect(() => {
     newAccountBalanceInputBox.current !== null &&
       newAccountBalanceInputBox.current.focus();
-    console.log(editAccountDetail);
   }, []);
 
   const newAccountBalance = (e: React.FormEvent<EventTarget>) => {

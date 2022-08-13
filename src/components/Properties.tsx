@@ -11,6 +11,7 @@ import "./Properties.css";
 import editIcon from "../assets/images/edit.png";
 import currencyConvert from "../modules/currencyConvert";
 import PropertiesUpdateVal from "./PropertiesUpdateVal";
+import getDisplayNumber from "../modules/getDisplayNumber";
 
 const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
@@ -26,47 +27,30 @@ const Properties: React.FC<PropertiesProps> = ({
     useState<editingPropertyDetails>();
 
   const refreshPropertiesValues = async () => {
-    if (selectedCurrencyCode !== null) {
-      const propData: Array<propertiesAPIData> = await getPropertiesData();
+    const propData: Array<propertiesAPIData> = await getPropertiesData();
 
-      let TotalInSelectCurr: number = 0;
+    let TotalInSelectCurr: number = 0;
 
-      for await (let item of propData) {
-        const netValue = item.property_valuation - item.property_loan_value;
-        console.log(item.property_valuation_currency, selectedCurrencyCode);
+    for (let i = 0; i < propData.length; i += 1) {
+      const netValue =
+        propData[i].property_valuation - propData[i].property_loan_value;
 
-        if (item.property_valuation_currency === selectedCurrencyCode) {
-          console.log("Got here", new Date());
-          item.displayValue = netValue;
-        } else {
-          console.log(
-            netValue,
-            item.property_valuation_currency,
-            selectedCurrencyCode
-          );
+      const convertedValue = await currencyConvert(
+        netValue,
+        propData[i].property_valuation_currency,
+        selectedCurrencyCode
+      );
 
-          const convertedValue = await currencyConvert(
-            netValue,
-            item.property_valuation_currency,
-            selectedCurrencyCode
-          );
-          // const convertedValue = netValue * 1.3;
+      propData[i].displayValue = await convertedValue;
 
-          console.log(convertedValue, new Date());
-
-          item.displayValue = await convertedValue;
-        }
-        TotalInSelectCurr += item.displayValue;
-        console.log(item.displayValue, new Date());
-      }
-      setpropertiesConvertedTotal(TotalInSelectCurr);
-      setPropertiesAPIData(propData);
-      setShowSpinner(false);
+      TotalInSelectCurr += propData[i].displayValue;
     }
+    setpropertiesConvertedTotal(TotalInSelectCurr);
+    setPropertiesAPIData(propData);
+    setShowSpinner(false);
   };
 
   useEffect(() => {
-    console.log("Runs useEffect", selectedCurrencyCode);
     refreshPropertiesValues();
   }, [selectedCurrencyCode]);
 
@@ -104,7 +88,7 @@ const Properties: React.FC<PropertiesProps> = ({
             <h3 className="viewCardHeading">PROPERTY</h3>
             <h3 className="viewCardTotal">
               {selectedCurrencySymbol}{" "}
-              {propertiesConvertedTotal.toLocaleString("en-US")}
+              {getDisplayNumber(propertiesConvertedTotal)}
             </h3>
           </motion.div>
           {propertiesAPIData?.map((data) => (
@@ -112,26 +96,30 @@ const Properties: React.FC<PropertiesProps> = ({
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.5 }}
-              className="viewCardRow PropertyCardRow"
+              className="viewCardRow"
               key={data.property_id}
-              onClick={() =>
-                editThisProperty(
-                  data.property_id,
-                  data.property_nickname,
-                  data.property_valuation,
-                  data.property_loan_value,
-                  data.property_valuation_curr_symbol
-                )
-              }
             >
               {propertyToEdit === data.property_id ? (
                 <PropertiesUpdateVal
+                  setpropertyToEdit={setpropertyToEdit}
                   editingPropertyDetails={editingPropertyDetails}
+                  seteditingPropertyDetails={seteditingPropertyDetails}
                   refreshPropertiesValues={refreshPropertiesValues}
                 />
               ) : (
                 <Fragment>
-                  <div className="viewCardRowLeftBox">
+                  <div
+                    className="viewCardRowLeftBox PropertyLeftBox"
+                    onClick={() =>
+                      editThisProperty(
+                        data.property_id,
+                        data.property_nickname,
+                        data.property_valuation,
+                        data.property_loan_value,
+                        data.property_valuation_curr_symbol
+                      )
+                    }
+                  >
                     <span className="propertyName">
                       {data.property_nickname.toUpperCase()}
                       <img
@@ -148,28 +136,38 @@ const Properties: React.FC<PropertiesProps> = ({
                     </span>
                   </div>
                   <div className="viewCardRowRightBox">
-                    <span className="currentValueText">
-                      Net {selectedCurrencyCode}:{" "}
-                      <span className="calculatedBalanceValue">
-                        {selectedCurrencySymbol}{" "}
-                        {data.displayValue.toLocaleString("en-US")}
-                      </span>
-                    </span>
-
-                    <span className="valueBaseCurrency">
-                      Valuation: {data.property_valuation_curr_symbol}{" "}
-                      {data.property_valuation.toLocaleString("en-US")}
-                    </span>
-                    <span className="loanValueBaseCurrency">
-                      Loan: {data.property_valuation_curr_symbol}{" "}
-                      {data.property_loan_value.toLocaleString("en-US")}
-                    </span>
-                    <span className="netValueBaseCurrency">
-                      Net val: {data.property_valuation_curr_symbol}{" "}
-                      {(
-                        data.property_valuation - data.property_loan_value
-                      ).toLocaleString("en-US")}
-                    </span>
+                    <table className="valuesTable">
+                      <tbody>
+                        <tr className="calculatedBalanceValueRow">
+                          <td>Net {selectedCurrencyCode}: </td>
+                          <td>
+                            {selectedCurrencySymbol}{" "}
+                            {getDisplayNumber(data.displayValue)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Valuation: </td>
+                          <td>
+                            {data.property_valuation_curr_symbol}{" "}
+                            {getDisplayNumber(data.property_valuation)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Loan: </td>
+                          <td>
+                            {data.property_valuation_curr_symbol}{" "}
+                            {getDisplayNumber(data.property_loan_value)}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Net Val: </td>
+                          <td>
+                            {data.property_valuation_curr_symbol}{" "}
+                            {getDisplayNumber(data.displayValue)}
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </Fragment>
               )}
