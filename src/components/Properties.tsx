@@ -163,7 +163,9 @@ const Properties: React.FC<PropertiesProps> = ({
                           <td>Net Val: </td>
                           <td>
                             {data.property_valuation_curr_symbol}{" "}
-                            {getDisplayNumber(data.displayValue)}
+                            {getDisplayNumber(
+                              data.property_valuation - data.property_loan_value
+                            )}
                           </td>
                         </tr>
                       </tbody>

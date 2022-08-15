@@ -1,7 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Fragment } from "react";
 import { propertiesUpdateValProps } from "../modules/typeInterfaces";
 import { motion } from "framer-motion";
 import "./PropertiesUpdateVal.css";
+import { LanguageVariant, ListFormat } from "typescript";
+import { updatePropertyValue } from "../modules/serverRequests";
 
 const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
   setpropertyToEdit,
@@ -19,7 +21,21 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
     newPropValueInputBox.current!.focus();
   }, []);
 
-  const saveNewPropValue = () => {};
+  const saveNewPropValue = (e: React.FormEvent<EventTarget>) => {
+    e.preventDefault();
+
+    updatePropertyValue(
+      editingPropertyDetails!.property_id,
+      editingPropertyDetails!.property_valuation,
+      editingPropertyDetails!.property_loan_value
+    )
+      .then((data) => {
+        // refreshPropertiesValues();
+        // seteditingPropertyDetails(undefined);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const newPropValuation = (e: React.FormEvent<EventTarget>) => {
     console.log();
     const target = e.target as HTMLInputElement;
@@ -41,59 +57,63 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
     setpropertyToEdit(-1);
   };
   return (
-    <motion.form
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="editPropertyForm"
-      onSubmit={saveNewPropValue}
-    >
+    <Fragment>
       <span className="propertyName">
         {editingPropertyDetails?.property_nickname.toUpperCase()}
       </span>
-      <div>
-        Valuation
-        {editingPropertyDetails?.property_valuation_curr_symbol}
-        <input
-          name="newPropertyValueInputBox"
-          className="newPropertyValueInputBox"
-          type="number"
-          ref={newPropValueInputBox}
-          value={editingPropertyDetails?.property_valuation}
-          onChange={newPropValuation}
-          required
-        />
-      </div>
-      <div>
-        Loan Amount
-        {editingPropertyDetails?.property_valuation_curr_symbol}
-        <input
-          name="newPropertyLoanAmountInputBox"
-          className="newPropertyLoanAmountInputBox"
-          type="number"
-          value={editingPropertyDetails?.property_loan_value}
-          onChange={newPropLoanAmount}
-          required
-        />
-      </div>
+      <motion.form
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="editPropertyForm"
+        onSubmit={(e) => saveNewPropValue(e)}
+      >
+        <label className="newPropertyValueInputRow">
+          Valuation
+          {editingPropertyDetails?.property_valuation_curr_symbol}
+          <input
+            name="newPropertyValueInputBox"
+            className="newPropertyValueInputBox"
+            type="number"
+            ref={newPropValueInputBox}
+            value={editingPropertyDetails?.property_valuation}
+            onChange={newPropValuation}
+            required
+          />
+        </label>
 
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.8 }}
-        className="buttonPrimary buttonCashBalSave"
-        type="submit"
-      >
-        Save
-      </motion.button>
-      <motion.button
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.8 }}
-        className="buttonPrimary buttonCashBalSave"
-        onClick={cancelForm}
-      >
-        Cancel
-      </motion.button>
-    </motion.form>
+        <label className="newPropertyValueInputRow">
+          Loan Amount
+          {editingPropertyDetails?.property_valuation_curr_symbol}
+          <input
+            name="newPropertyLoanAmountInputBox"
+            className="newPropertyLoanAmountInputBox"
+            type="number"
+            value={editingPropertyDetails?.property_loan_value}
+            onChange={newPropLoanAmount}
+            required
+          />
+        </label>
+        <div className="newPropertyValueInputRow">
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.8 }}
+            className="buttonPrimary buttonCashBalSave"
+            onClick={cancelForm}
+          >
+            Cancel
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.8 }}
+            className="buttonPrimary buttonCashBalSave"
+            type="submit"
+          >
+            Save
+          </motion.button>
+        </div>
+      </motion.form>
+    </Fragment>
   );
 };
 

@@ -79,6 +79,27 @@ const updateCashAccountBalance = async (
   }
 };
 
+const updatePropertyValue = async (
+  property_id: number,
+  property_valuation: number,
+  property_loan_value: number
+) => {
+  const formData = {
+    property_id,
+    property_valuation,
+    property_loan_value,
+  };
+  try {
+    const serverResponse = await axios.post(
+      "/api/updatepropertyvalue",
+      formData
+    );
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export {
   createAccountAttempt,
   loginAttempt,
@@ -87,4 +108,5 @@ export {
   getPropertiesData,
   getCurrencyFXData,
   getCurrencyCodeData,
+  updatePropertyValue,
 };

@@ -12,4 +12,21 @@
 .editPropertyForm {
   display: flex;
   flex-direction: column;
+  margin: 5px 0px 0px 0px;
+}
+
+.newPropertyValueInputRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
+  margin: 0px 0px 5px 0px;
+  font-weight: unset;
+  font-size: 0.8rem;
+}
+
+.buttonPropValUpdate {
+  margin: 0px 0px 0px 10px;
+  border-radius: 10px;
 }
