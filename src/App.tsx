@@ -7,6 +7,7 @@ import { getCurrencyCodeData } from "./modules/serverRequests";
 
 import {} from "./modules/serverRequests";
 import ChartExample from "./components/ChartExample";
+import Investments from "./components/Investments";
 
 function App() {
   const [selectedCurrencyCode, setselectedCurrencyCode] =
@@ -53,6 +54,10 @@ function App() {
           selectedCurrencySymbol={selectedCurrencySymbol}
         />
         <CashAccounts
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+        />
+        <Investments
           selectedCurrencyCode={selectedCurrencyCode}
           selectedCurrencySymbol={selectedCurrencySymbol}
         />

@@ -28,6 +28,35 @@ code {
   color: rgb(26, 24, 21);
 }
 
+.tableRoundedCorner {
+  border-spacing: 0;
+  border-collapse: separate;
+  border-radius: 10px;
+  border: 1px solid black;
+}
+
+/* Apply a border to the right of all but the last column */
+.tableRoundedCorner th:not(:last-child),
+.tableRoundedCorner th:not(:last-child),
+.tableRoundedCorner td:not(:last-child) {
+  border-right: 1px solid black;
+}
+
+/* Apply a border to the bottom of all but the last row */
+.tableRoundedCorner > thead > tr:not(:last-child) > th,
+.tableRoundedCorner > thead > tr:not(:last-child) > td,
+.tableRoundedCorner > tbody > tr:not(:last-child) > th,
+.tableRoundedCorner > tbody > tr:not(:last-child) > td,
+.tableRoundedCorner > tfoot > tr:not(:last-child) > th,
+.tableRoundedCorner > tfoot > tr:not(:last-child) > td,
+.tableRoundedCorner > tr:not(:last-child) > td,
+.tableRoundedCorner > tr:not(:last-child) > th,
+.tableRoundedCorner > thead:not(:last-child),
+.tableRoundedCorner > tbody:not(:last-child),
+.tableRoundedCorner > tfoot:not(:last-child) {
+  border-bottom: 1px solid black;
+}
+
 .viewCardsCascade {
   display: flex;
   flex-direction: row;
@@ -102,4 +131,10 @@ h4 {
   flex-direction: column;
   margin: 10px 0px 10px 10px;
   width: 50%;
+}
+
+@media only screen and (max-width: 600px) {
+  .columnNotInNarrowTable {
+    display: none;
+  }
 }

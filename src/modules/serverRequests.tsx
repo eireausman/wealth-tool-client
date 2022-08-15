@@ -54,6 +54,7 @@ const getPropertiesData = async () => {
 const getCashAccountData = async () => {
   try {
     const serverResponse = await axios.get("/api/getcashaccountdata");
+
     return await serverResponse.data;
   } catch (err) {
     console.error(err);
@@ -100,6 +101,16 @@ const updatePropertyValue = async (
   }
 };
 
+const getInvestmentData = async () => {
+  try {
+    const serverResponse = await axios.get("/api/getinvestmentdata");
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export {
   createAccountAttempt,
   loginAttempt,
@@ -109,4 +120,5 @@ export {
   getCurrencyFXData,
   getCurrencyCodeData,
   updatePropertyValue,
+  getInvestmentData,
 };

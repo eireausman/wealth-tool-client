@@ -136,7 +136,12 @@ const Properties: React.FC<PropertiesProps> = ({
                     </span>
                   </div>
                   <div className="viewCardRowRightBox">
-                    <table className="valuesTable">
+                    <motion.table
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5 }}
+                      className="valuesTable"
+                    >
                       <tbody>
                         <tr className="calculatedBalanceValueRow">
                           <td>Net {selectedCurrencyCode}: </td>
@@ -169,7 +174,7 @@ const Properties: React.FC<PropertiesProps> = ({
                           </td>
                         </tr>
                       </tbody>
-                    </table>
+                    </motion.table>
                   </div>
                 </Fragment>
               )}

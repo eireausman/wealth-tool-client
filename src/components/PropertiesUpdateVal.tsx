@@ -30,8 +30,8 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
       editingPropertyDetails!.property_loan_value
     )
       .then((data) => {
-        // refreshPropertiesValues();
-        // seteditingPropertyDetails(undefined);
+        refreshPropertiesValues();
+        setpropertyToEdit(-1);
       })
       .catch((err) => console.log(err));
   };
@@ -57,63 +57,60 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
     setpropertyToEdit(-1);
   };
   return (
-    <Fragment>
-      <span className="propertyName">
+    <motion.form
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.5 }}
+      className="editPropertyForm"
+      onSubmit={(e) => saveNewPropValue(e)}
+    >
+      <span className="propertyValUpdateName">
         {editingPropertyDetails?.property_nickname.toUpperCase()}
       </span>
-      <motion.form
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="editPropertyForm"
-        onSubmit={(e) => saveNewPropValue(e)}
-      >
-        <label className="newPropertyValueInputRow">
-          Valuation
-          {editingPropertyDetails?.property_valuation_curr_symbol}
-          <input
-            name="newPropertyValueInputBox"
-            className="newPropertyValueInputBox"
-            type="number"
-            ref={newPropValueInputBox}
-            value={editingPropertyDetails?.property_valuation}
-            onChange={newPropValuation}
-            required
-          />
-        </label>
+      <label className="newPropertyValueInputRow">
+        Valuation {editingPropertyDetails?.property_valuation_curr_symbol}
+        {}
+        <input
+          name="newPropertyValueInputBox"
+          className="newPropertyValueInputBox"
+          type="number"
+          ref={newPropValueInputBox}
+          value={editingPropertyDetails?.property_valuation}
+          onChange={newPropValuation}
+          required
+        />
+      </label>
 
-        <label className="newPropertyValueInputRow">
-          Loan Amount
-          {editingPropertyDetails?.property_valuation_curr_symbol}
-          <input
-            name="newPropertyLoanAmountInputBox"
-            className="newPropertyLoanAmountInputBox"
-            type="number"
-            value={editingPropertyDetails?.property_loan_value}
-            onChange={newPropLoanAmount}
-            required
-          />
-        </label>
-        <div className="newPropertyValueInputRow">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.8 }}
-            className="buttonPrimary buttonCashBalSave"
-            onClick={cancelForm}
-          >
-            Cancel
-          </motion.button>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.8 }}
-            className="buttonPrimary buttonCashBalSave"
-            type="submit"
-          >
-            Save
-          </motion.button>
-        </div>
-      </motion.form>
-    </Fragment>
+      <label className="newPropertyValueInputRow">
+        Loan Amount {editingPropertyDetails?.property_valuation_curr_symbol}
+        <input
+          name="newPropertyLoanAmountInputBox"
+          className="newPropertyLoanAmountInputBox"
+          type="number"
+          value={editingPropertyDetails?.property_loan_value}
+          onChange={newPropLoanAmount}
+          required
+        />
+      </label>
+      <div className="newPropertyValueInputRow">
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.8 }}
+          className="buttonPrimary buttonCashBalSave"
+          onClick={cancelForm}
+        >
+          Cancel
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.8 }}
+          className="buttonPrimary buttonCashBalSave"
+          type="submit"
+        >
+          Save
+        </motion.button>
+      </div>
+    </motion.form>
   );
 };
 

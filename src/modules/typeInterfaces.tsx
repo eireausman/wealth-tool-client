@@ -53,6 +53,11 @@ export interface PropertiesProps {
   selectedCurrencySymbol: string;
 }
 
+export interface InvestmentsProps {
+  selectedCurrencyCode: string;
+  selectedCurrencySymbol: string;
+}
+
 export interface editingPropertyDetails {
   property_id: number;
   property_nickname: string;
@@ -71,6 +76,20 @@ export interface propertiesAPIData {
   property_valuation_currency: string;
   property_valuation_curr_symbol: string;
   displayValue: number;
+}
+
+export interface investmentsAPIData {
+  [key: string]: string | number | undefined;
+  holding_cost_total_value: number;
+  holding_currency_code: string;
+  holding_currency_symbol: string;
+  holding_current_price: number;
+  holding_id: number;
+  holding_institution: string;
+  holding_market_identifier: string;
+  holding_owner_name: string;
+  holding_quantity_held: number;
+  userUsersId: number;
 }
 
 export interface propertiesUpdateValProps {
