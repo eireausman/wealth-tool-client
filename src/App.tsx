@@ -1,4 +1,4 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState, createContext } from "react";
 import CashAccounts from "./components/CashAccounts";
 import OptionsBoard from "./components/OptionsBoard";
 import Properties from "./components/Properties";
@@ -60,6 +60,7 @@ function App() {
         <Investments
           selectedCurrencyCode={selectedCurrencyCode}
           selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
         />
         <ChartExample />
       </div>

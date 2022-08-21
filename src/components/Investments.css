@@ -1,0 +1,41 @@
+.investmentsTable {
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 5px;
+}
+
+.investmentsTable > thead > tr > td {
+  font-weight: 600;
+  padding: 0px 15px 7px 0px;
+  border-bottom: 1px dashed rgb(189, 183, 183);
+}
+.investmentsTable > tbody > tr > td {
+  padding: 4px 15px 4px 0px;
+  vertical-align: top;
+}
+
+.investmentsTable > tbody {
+  font-weight: unset;
+  font-size: 0.9rem;
+}
+
+tbody:hover:not(:first-child) tr td {
+  border-radius: 10px;
+}
+
+.addStockButton {
+  background-color: white;
+  color: black;
+  margin: 0px 0px 0px 10px;
+  border-radius: 10px;
+}
+
+.columnInWideView {
+}
+
+.columnNotInNarrowTable {
+}
+
+@media only screen and (max-width: 600px) {
+}

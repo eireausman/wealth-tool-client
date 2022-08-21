@@ -1,4 +1,17 @@
-import { StringLiteral } from "typescript";
+export interface AddANewInvestmentProps {
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+}
+
+export interface AddNewInvestmentFormData {
+  [key: string]: string | number | undefined;
+  stockName?: string;
+  quantity?: number;
+  Currency?: string;
+  cost?: number;
+  currentPrice?: number;
+  ownerName?: string;
+  institution?: string;
+}
 
 export interface createAccountFormData {
   [key: string]: string | undefined;
@@ -48,14 +61,10 @@ export interface editAccountDetail {
   account_nickname: string;
 }
 
-export interface PropertiesProps {
-  selectedCurrencyCode: string;
-  selectedCurrencySymbol: string;
-}
-
 export interface InvestmentsProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
 }
 
 export interface editingPropertyDetails {
@@ -88,8 +97,16 @@ export interface investmentsAPIData {
   holding_institution: string;
   holding_market_identifier: string;
   holding_owner_name: string;
+  holding_stock_name: string;
   holding_quantity_held: number;
   userUsersId: number;
+  displayValueBaseCurrency: number;
+  displayValueConverted: number;
+}
+
+export interface PropertiesProps {
+  selectedCurrencyCode: string;
+  selectedCurrencySymbol: string;
 }
 
 export interface propertiesUpdateValProps {
