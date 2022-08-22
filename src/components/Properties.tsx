@@ -12,10 +12,12 @@ import editIcon from "../assets/images/edit.png";
 import currencyConvert from "../modules/currencyConvert";
 import PropertiesUpdateVal from "./PropertiesUpdateVal";
 import getDisplayNumber from "../modules/getDisplayNumber";
+import PropertiesNewProp from "./PropertiesNewProp";
 
 const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
+  currencyCodesFromDB,
 }) => {
   const [propertiesAPIData, setPropertiesAPIData] =
     useState<Array<propertiesAPIData>>();
@@ -25,6 +27,7 @@ const Properties: React.FC<PropertiesProps> = ({
   const [propertyToEdit, setpropertyToEdit] = useState<number>();
   const [editingPropertyDetails, seteditingPropertyDetails] =
     useState<editingPropertyDetails>();
+  const [showAddNewForm, setshowAddNewForm] = useState(false);
 
   const refreshPropertiesValues = async () => {
     const propData: Array<propertiesAPIData> = await getPropertiesData();
@@ -73,114 +76,139 @@ const Properties: React.FC<PropertiesProps> = ({
     seteditingPropertyDetails(editPropertyDetails);
   };
 
+  const showAddPropForm = () => {
+    setshowAddNewForm(true);
+  };
+
   return (
     <section className="viewCard">
-      {showSpinner === true ? (
-        <CardSpinner cardTitle="Properties" />
+      {showAddNewForm === true ? (
+        <PropertiesNewProp
+          currencyCodesFromDB={currencyCodesFromDB}
+          setshowAddNewForm={setshowAddNewForm}
+          refreshPropertiesValues={refreshPropertiesValues}
+        />
       ) : (
-        <Fragment>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
-            className="viewCardHeaderRow"
-          >
-            <h3 className="viewCardHeading">PROPERTY</h3>
-            <h3 className="viewCardTotal">
-              {selectedCurrencySymbol}{" "}
-              {getDisplayNumber(propertiesConvertedTotal)}
-            </h3>
-          </motion.div>
-          {propertiesAPIData?.map((data) => (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="viewCardRow"
-              key={data.property_id}
-            >
-              {propertyToEdit === data.property_id ? (
-                <PropertiesUpdateVal
-                  setpropertyToEdit={setpropertyToEdit}
-                  editingPropertyDetails={editingPropertyDetails}
-                  seteditingPropertyDetails={seteditingPropertyDetails}
-                  refreshPropertiesValues={refreshPropertiesValues}
-                />
-              ) : (
-                <Fragment>
-                  <div
-                    className="viewCardRowLeftBox PropertyLeftBox"
-                    onClick={() =>
-                      editThisProperty(
-                        data.property_id,
-                        data.property_nickname,
-                        data.property_valuation,
-                        data.property_loan_value,
-                        data.property_valuation_curr_symbol
-                      )
-                    }
+        <div>
+          {" "}
+          {showSpinner === true ? (
+            <CardSpinner cardTitle="Properties" />
+          ) : (
+            <Fragment>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="viewCardHeaderRow"
+              >
+                <h3 className="viewCardHeading">PROPERTY</h3>
+
+                <h3 className="viewCardTotal">
+                  {selectedCurrencySymbol}{" "}
+                  {getDisplayNumber(propertiesConvertedTotal)}
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="buttonWhite buttonAddNewEntry"
+                    onClick={showAddPropForm}
                   >
-                    <span className="propertyName">
-                      {data.property_nickname.toUpperCase()}
-                      <img
-                        src={editIcon}
-                        className="editValueIcon"
-                        alt="Edit Value"
-                      />
-                    </span>
-                    <span className="ownerText">
-                      Owner: {data.property_owner_name}
-                    </span>
-                    <span className="valueBaseCurrency">
-                      Currency: {data.property_valuation_currency}
-                    </span>
-                  </div>
-                  <div className="viewCardRowRightBox">
-                    <motion.table
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5 }}
-                      className="valuesTable"
-                    >
-                      <tbody>
-                        <tr className="calculatedBalanceValueRow">
-                          <td>Net {selectedCurrencyCode}: </td>
-                          <td>
-                            {selectedCurrencySymbol}{" "}
-                            {getDisplayNumber(data.displayValue)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Valuation: </td>
-                          <td>
-                            {data.property_valuation_curr_symbol}{" "}
-                            {getDisplayNumber(data.property_valuation)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Loan: </td>
-                          <td>
-                            {data.property_valuation_curr_symbol}{" "}
-                            {getDisplayNumber(data.property_loan_value)}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>Net Val: </td>
-                          <td>
-                            {data.property_valuation_curr_symbol}{" "}
-                            {getDisplayNumber(
-                              data.property_valuation - data.property_loan_value
-                            )}
-                          </td>
-                        </tr>
-                      </tbody>
-                    </motion.table>
-                  </div>
-                </Fragment>
-              )}
-            </motion.div>
-          ))}
-        </Fragment>
+                    + Add Property
+                  </motion.button>
+                </h3>
+              </motion.div>
+              {propertiesAPIData?.map((data) => (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5 }}
+                  className="viewCardRow"
+                  key={data.property_id}
+                >
+                  {propertyToEdit === data.property_id ? (
+                    <PropertiesUpdateVal
+                      setpropertyToEdit={setpropertyToEdit}
+                      editingPropertyDetails={editingPropertyDetails}
+                      seteditingPropertyDetails={seteditingPropertyDetails}
+                      refreshPropertiesValues={refreshPropertiesValues}
+                    />
+                  ) : (
+                    <Fragment>
+                      <div
+                        className="viewCardRowLeftBox PropertyLeftBox"
+                        onClick={() =>
+                          editThisProperty(
+                            data.property_id,
+                            data.property_nickname,
+                            data.property_valuation,
+                            data.property_loan_value,
+                            data.property_valuation_curr_symbol
+                          )
+                        }
+                      >
+                        <span className="propertyName">
+                          {data.property_nickname.toUpperCase()}
+                          <img
+                            src={editIcon}
+                            className="editValueIcon"
+                            alt="Edit Value"
+                          />
+                        </span>
+                        <span className="ownerText">
+                          Owner: {data.property_owner_name}
+                        </span>
+                        <span className="valueBaseCurrency">
+                          Currency: {data.property_valuation_currency}
+                        </span>
+                      </div>
+                      <div className="viewCardRowRightBox">
+                        <motion.table
+                          initial={{ opacity: 0, scale: 0.5 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.5 }}
+                          className="valuesTable"
+                        >
+                          <tbody>
+                            <tr className="calculatedBalanceValueRow">
+                              <td>Net {selectedCurrencyCode}: </td>
+                              <td>
+                                {selectedCurrencySymbol}{" "}
+                                {getDisplayNumber(data.displayValue)}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Valuation: </td>
+                              <td>
+                                {data.property_valuation_curr_symbol}{" "}
+                                {getDisplayNumber(data.property_valuation)}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Loan: </td>
+                              <td>
+                                {data.property_valuation_curr_symbol}{" "}
+                                {getDisplayNumber(data.property_loan_value)}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>Net Val: </td>
+                              <td>
+                                {data.property_valuation_curr_symbol}{" "}
+                                {getDisplayNumber(
+                                  data.property_valuation -
+                                    data.property_loan_value
+                                )}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </motion.table>
+                      </div>
+                    </Fragment>
+                  )}
+                </motion.div>
+              ))}
+            </Fragment>
+          )}
+        </div>
       )}
     </section>
   );

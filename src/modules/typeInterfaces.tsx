@@ -1,16 +1,36 @@
 export interface AddANewInvestmentProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  setShowAddNewStockForm: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshInvestmentsData: () => void;
+}
+
+export interface PropertiesNewPropProps {
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  setshowAddNewForm: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshPropertiesValues: () => void;
 }
 
 export interface AddNewInvestmentFormData {
   [key: string]: string | number | undefined;
   stockName?: string;
+  identifier?: string;
   quantity?: number;
-  Currency?: string;
   cost?: number;
   currentPrice?: number;
   ownerName?: string;
   institution?: string;
+  currencySymbol?: string;
+  currencyCode?: string;
+}
+
+export interface AddNewPropertyFormData {
+  [key: string]: string | number | undefined;
+  propName?: string;
+  propOwner?: string;
+  propValue?: number;
+  propLoan?: number;
+  currencySymbol?: string;
+  currencyCode?: string;
 }
 
 export interface createAccountFormData {
@@ -107,6 +127,7 @@ export interface investmentsAPIData {
 export interface PropertiesProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
 }
 
 export interface propertiesUpdateValProps {

@@ -33,7 +33,6 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
 
   const saveNewAccountBalance = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    console.log(editAccountDetail.account_balance);
     updateCashAccountBalance(
       editAccountDetail.account_id!,
       editAccountDetail.account_balance!

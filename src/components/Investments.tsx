@@ -57,6 +57,10 @@ const Investments: React.FC<InvestmentsProps> = ({
     setShowAddNewStockForm(true);
   };
 
+  const updateThisStock = () => {
+    console.log("got here");
+  };
+
   return (
     <section className="viewCard">
       {showSpinner === true ? (
@@ -64,7 +68,11 @@ const Investments: React.FC<InvestmentsProps> = ({
       ) : (
         <Fragment>
           {showAddNewStockForm === true ? (
-            <InvestmentAddStock currencyCodesFromDB={currencyCodesFromDB} />
+            <InvestmentAddStock
+              currencyCodesFromDB={currencyCodesFromDB}
+              setShowAddNewStockForm={setShowAddNewStockForm}
+              refreshInvestmentsData={refreshInvestmentsData}
+            />
           ) : (
             <Fragment>
               <motion.div
@@ -80,7 +88,7 @@ const Investments: React.FC<InvestmentsProps> = ({
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="buttonWhite addStockButton"
+                    className="buttonWhite buttonAddNewEntry"
                     onClick={addANewStock}
                   >
                     + Add Stock
@@ -99,7 +107,7 @@ const Investments: React.FC<InvestmentsProps> = ({
                 </thead>
                 <tbody>
                   {propertiesAPIData?.map((data) => (
-                    <tr key={data.holding_id}>
+                    <tr onClick={updateThisStock} key={data.holding_id}>
                       <td className="columnInWideView">
                         {data.holding_stock_name}
                       </td>

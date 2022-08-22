@@ -52,6 +52,7 @@ function App() {
         <Properties
           selectedCurrencyCode={selectedCurrencyCode}
           selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
         />
         <CashAccounts
           selectedCurrencyCode={selectedCurrencyCode}

@@ -1,27 +1,27 @@
 import React, { Fragment, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
-  AddANewInvestmentProps,
-  AddNewInvestmentFormData,
+  PropertiesNewPropProps,
+  AddNewPropertyFormData,
 } from "../modules/typeInterfaces";
-import "./InvestmentAddStock.css";
-import { addnewinvestment } from "../modules/serverRequests";
+import "./PropertiesNewProp.css";
+import { addNewProperty } from "../modules/serverRequests";
 
-const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
+const PropertiesNewProp: React.FC<PropertiesNewPropProps> = ({
   currencyCodesFromDB,
-  setShowAddNewStockForm,
-  refreshInvestmentsData,
+  setshowAddNewForm,
+  refreshPropertiesValues,
 }) => {
-  const [formData, setformData] = useState<AddNewInvestmentFormData>();
+  const [formData, setformData] = useState<AddNewPropertyFormData>();
   const currencyCodeSelection = useRef<HTMLSelectElement | null>(null);
 
   const cancelForm = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    setShowAddNewStockForm(false);
+    setshowAddNewForm(false);
   };
 
   const updateFormDataState = (e: React.FormEvent<EventTarget>) => {
-    const formDataCopy: AddNewInvestmentFormData = { ...formData };
+    const formDataCopy: AddNewPropertyFormData = { ...formData };
     const target = e.target as HTMLInputElement;
 
     const fieldName =
@@ -32,7 +32,7 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
     setformData(formDataCopy);
   };
 
-  const saveNewInvestment = (e: React.FormEvent<EventTarget>) => {
+  const saveNewProperty = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     // figure out the currency symbol to add to the db
     const currencyCodeForSubmission = currencyCodeSelection.current!.value;
@@ -44,22 +44,19 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
     });
 
     const formDataForSubmission = {
-      stockName: formData?.stockName,
-      identifier: formData?.identifier,
-      quantity: formData?.quantity,
+      property_nickname: formData?.propName,
+      property_owner_name: formData?.propOwner,
+      property_valuation: formData?.propValue,
+      property_loan_value: formData?.propLoan,
       currencyCode: currencyCodeForSubmission,
       currencySymbol: currencySymbolForSubmission,
-      currentPrice: formData?.currentPrice,
-      ownerName: formData?.ownerName,
-      institution: formData?.institution,
-      cost: formData?.cost,
     };
 
-    addnewinvestment(formDataForSubmission)
+    addNewProperty(formDataForSubmission)
       .then((data) => {
         console.log(data);
-        refreshInvestmentsData();
-        setShowAddNewStockForm(false);
+        // refreshPropertiesValues();
+        // setshowAddNewForm(false);
       })
       .catch((err) => console.log(err));
   };
@@ -72,54 +69,42 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
         transition={{ duration: 0.5 }}
         className="viewCardHeaderRow"
       >
-        <h3 className="viewCardHeading">INVESTMENTS</h3>
-        <h3 className="viewCardTotal"> Add a new Investment</h3>
+        <h3 className="viewCardHeading">PROPERTIES</h3>
+        <h3 className="viewCardTotal"> Add a new Property</h3>
       </motion.div>
       <div className="viewCardRow">
         <motion.form
           initial={{ opacity: 0, scale: 0.5 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="addNewStockForm"
-          onSubmit={(e) => saveNewInvestment(e)}
+          className="addNewPropForm"
+          onSubmit={(e) => saveNewProperty(e)}
         >
-          <span className="addNewStockFormHeading">Stock detail</span>
-          <label className="newStockInputRow">
-            Stock Name
+          <span className="addNewPropFormHeading">Property detail</span>
+          <label className="newPropInputRow">
+            Property Name
             <input
-              name="stockName"
-              className="newStockInputField"
+              name="propName"
+              className="newPropInputField"
               type="text"
               required
               onChange={updateFormDataState}
             />
           </label>
-
-          <label className="newStockInputRow">
-            Stock Identifier
+          <label className="newPropInputRow">
+            Owner's Name
             <input
-              name="identifier"
-              placeholder="e.g. ASX"
-              className="newStockInputField"
+              name="propOwner"
+              className="newPropInputField"
               type="text"
               required
               onChange={updateFormDataState}
             />
           </label>
-          <label className="newStockInputRow">
-            Quantity Held
-            <input
-              name="quantity"
-              className="newStockInputField"
-              type="number"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <label className="newStockInputRow">
-            Stock Currency
+          <label className="newPropInputRow">
+            Valued in this currency:
             <select
-              className="newStockInputField"
+              className="newPropInputField"
               name="currencyCode"
               id="currencyCode"
               ref={currencyCodeSelection}
@@ -132,49 +117,30 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               ))}
             </select>
           </label>
+          <label className="newPropInputRow">
+            Valuation
+            <input
+              name="propValue"
+              placeholder="e.g. 1000"
+              className="newPropInputField"
+              type="number"
+              required
+              onChange={updateFormDataState}
+            />
+          </label>
+          <label className="newPropInputRow">
+            Outstanding Loan
+            <input
+              name="propLoan"
+              placeholder="e.g. 1000"
+              className="newPropInputField"
+              type="number"
+              required
+              onChange={updateFormDataState}
+            />
+          </label>
 
-          <label className="newStockInputRow">
-            Total cost
-            <input
-              name="cost"
-              className="newStockInputField"
-              type="number"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <label className="newStockInputRow">
-            Current Price
-            <input
-              name="currentPrice"
-              placeholder="e.g. 159c or 159p"
-              className="newStockInputField"
-              type="number"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <label className="newStockInputRow">
-            Owner Name
-            <input
-              name="ownerName"
-              className="newStockInputField"
-              type="text"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <label className="newStockInputRow">
-            Broker / Bank Name
-            <input
-              name="institution"
-              className="newStockInputField"
-              type="text"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <div className="newStockInputRow">
+          <div className="newPropInputRow">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.8 }}
@@ -198,4 +164,4 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
   );
 };
 
-export default InvestmentAddStock;
+export default PropertiesNewProp;

@@ -1,5 +1,27 @@
 import axios from "axios";
-import { createAccountFormData } from "./typeInterfaces";
+import {
+  createAccountFormData,
+  AddNewInvestmentFormData,
+  AddNewPropertyFormData,
+} from "./typeInterfaces";
+
+const addnewinvestment = async (formData: AddNewInvestmentFormData) => {
+  try {
+    const serverResponse = await axios.post("/api/addnewinvestment", formData);
+    return await serverResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const addNewProperty = async (formData: AddNewPropertyFormData) => {
+  try {
+    const serverResponse = await axios.post("/api/addnewproperty", formData);
+    return await serverResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 const createAccountAttempt = async (formData: createAccountFormData) => {
   try {
@@ -121,4 +143,6 @@ export {
   getCurrencyCodeData,
   updatePropertyValue,
   getInvestmentData,
+  addnewinvestment,
+  addNewProperty,
 };
