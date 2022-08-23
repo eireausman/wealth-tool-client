@@ -95,55 +95,57 @@ const Investments: React.FC<InvestmentsProps> = ({
                   </motion.button>
                 </h3>
               </motion.div>
-              <table className="investmentsTable">
-                <thead>
-                  <tr>
-                    <td className="columnInWideView">HOLDING NAME</td>
-                    <td className="columnInWideView">OWNER</td>
-                    <td className="columnNotInNarrowTable"> QUANTITY</td>
-                    <td className="columnNotInNarrowTable"> PRICE</td>
-                    <td className="columnInWideView">VALUE</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {propertiesAPIData?.map((data) => (
-                    <tr onClick={updateThisStock} key={data.holding_id}>
-                      <td className="columnInWideView">
-                        {data.holding_stock_name}
-                      </td>
-                      <td className="columnInWideView">
-                        {data.holding_owner_name}
-                      </td>
-
-                      <td className="columnNotInNarrowTable">
-                        {" "}
-                        {data.holding_quantity_held}
-                      </td>
-                      <td className="columnNotInNarrowTable">
-                        {" "}
-                        {data.holding_current_price}
-                      </td>
-                      <td className="columnInWideView">
-                        {data.displayValueConverted !==
-                        data.displayValueBaseCurrency ? (
-                          <div>
-                            {selectedCurrencySymbol}{" "}
-                            {getDisplayNumber(data.displayValueConverted)}
-                            <br />
-                            {data.holding_currency_symbol}{" "}
-                            {getDisplayNumber(data.displayValueBaseCurrency)}
-                          </div>
-                        ) : (
-                          <div>
-                            {selectedCurrencySymbol}{" "}
-                            {getDisplayNumber(data.displayValueConverted)}
-                          </div>
-                        )}
-                      </td>
+              <div className="viewCardRow">
+                <table className="investmentsTable">
+                  <thead>
+                    <tr>
+                      <td className="columnInWideView">HOLDING NAME</td>
+                      <td className="columnInWideView">OWNER</td>
+                      <td className="columnNotInNarrowTable"> QUANTITY</td>
+                      <td className="columnNotInNarrowTable"> PRICE</td>
+                      <td className="columnInWideView">VALUE</td>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {propertiesAPIData?.map((data) => (
+                      <tr onClick={updateThisStock} key={data.holding_id}>
+                        <td className="columnInWideView">
+                          {data.holding_stock_name}
+                        </td>
+                        <td className="columnInWideView">
+                          {data.holding_owner_name}
+                        </td>
+
+                        <td className="columnNotInNarrowTable">
+                          {" "}
+                          {data.holding_quantity_held}
+                        </td>
+                        <td className="columnNotInNarrowTable">
+                          {" "}
+                          {data.holding_current_price}
+                        </td>
+                        <td className="columnInWideView">
+                          {data.displayValueConverted !==
+                          data.displayValueBaseCurrency ? (
+                            <div>
+                              {selectedCurrencySymbol}{" "}
+                              {getDisplayNumber(data.displayValueConverted)}
+                              <br />
+                              {data.holding_currency_symbol}{" "}
+                              {getDisplayNumber(data.displayValueBaseCurrency)}
+                            </div>
+                          ) : (
+                            <div>
+                              {selectedCurrencySymbol}{" "}
+                              {getDisplayNumber(data.displayValueConverted)}
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </Fragment>
           )}
         </Fragment>

@@ -89,8 +89,7 @@ const Properties: React.FC<PropertiesProps> = ({
           refreshPropertiesValues={refreshPropertiesValues}
         />
       ) : (
-        <div>
-          {" "}
+        <Fragment>
           {showSpinner === true ? (
             <CardSpinner cardTitle="Properties" />
           ) : (
@@ -208,7 +207,7 @@ const Properties: React.FC<PropertiesProps> = ({
               ))}
             </Fragment>
           )}
-        </div>
+        </Fragment>
       )}
     </section>
   );

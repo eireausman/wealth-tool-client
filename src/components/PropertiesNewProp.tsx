@@ -55,8 +55,8 @@ const PropertiesNewProp: React.FC<PropertiesNewPropProps> = ({
     addNewProperty(formDataForSubmission)
       .then((data) => {
         console.log(data);
-        // refreshPropertiesValues();
-        // setshowAddNewForm(false);
+        refreshPropertiesValues();
+        setshowAddNewForm(false);
       })
       .catch((err) => console.log(err));
   };
