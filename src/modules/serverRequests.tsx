@@ -3,11 +3,21 @@ import {
   createAccountFormData,
   AddNewInvestmentFormData,
   AddNewPropertyFormData,
+  AddNewCashAccountFormData,
 } from "./typeInterfaces";
 
 const addnewinvestment = async (formData: AddNewInvestmentFormData) => {
   try {
     const serverResponse = await axios.post("/api/addnewinvestment", formData);
+    return await serverResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const addNewCashAccount = async (formData: AddNewCashAccountFormData) => {
+  try {
+    const serverResponse = await axios.post("/api/addnewcashaccount", formData);
     return await serverResponse.data;
   } catch (error) {
     console.error(error);
@@ -145,4 +155,5 @@ export {
   getInvestmentData,
   addnewinvestment,
   addNewProperty,
+  addNewCashAccount,
 };

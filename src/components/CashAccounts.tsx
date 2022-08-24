@@ -12,23 +12,25 @@ import editIcon from "../assets/images/edit.png";
 import currencyConvert from "../modules/currencyConvert";
 import CardSpinner from "./CardSpinner";
 import getDisplayNumber from "../modules/getDisplayNumber";
+import CashAccountAddAcc from "./CashAccountAddAcc";
 
 const CashAccounts: React.FC<CashAccountsProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
+  currencyCodesFromDB,
 }) => {
   const [cashAccountAPIData, setcashAccountAPIData] =
     useState<Array<cashAccountAPIData>>();
   const [cashAccountsTotal, setcashAccountsTotal] = useState<number>(0);
   const [accountIDToEdit, setAccountIDToEdit] = useState<number>();
-
   const [editAccountDetail, seteditAccountDetail] =
     useState<editAccountDetail>();
-
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
+  const [showAddNewForm, setshowAddNewForm] = useState(false);
 
   const updatedAllAccountBalances = async () => {
     const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
+
     let TotalInSelectCurr: number = 0;
     for (let item of cashAcData) {
       const convertedValue = await currencyConvert(
@@ -48,6 +50,10 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
   useEffect(() => {
     updatedAllAccountBalances();
   }, [selectedCurrencyCode]);
+
+  const showAddNewCashAccForm = () => {
+    setshowAddNewForm(true);
+  };
 
   const editAccountBalance = (
     account_id: number,
@@ -70,6 +76,13 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
 
   return (
     <section className="viewCard">
+      {showAddNewForm === true && (
+        <CashAccountAddAcc
+          currencyCodesFromDB={currencyCodesFromDB}
+          setshowAddNewForm={setshowAddNewForm}
+          updatedAllAccountBalances={updatedAllAccountBalances}
+        />
+      )}
       {showSpinner === true ? (
         <CardSpinner cardTitle="Cash Accounts" />
       ) : (
@@ -83,6 +96,14 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
             <h3 className="viewCardHeading">CASH ACCOUNTS</h3>
             <h3 className="viewCardTotal">
               {selectedCurrencySymbol} {getDisplayNumber(cashAccountsTotal)}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="buttonWhite buttonAddNewEntry"
+                onClick={showAddNewCashAccForm}
+              >
+                + Add Stock
+              </motion.button>
             </h3>
           </motion.div>
 

@@ -57,6 +57,7 @@ function App() {
         <CashAccounts
           selectedCurrencyCode={selectedCurrencyCode}
           selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
         />
         <Investments
           selectedCurrencyCode={selectedCurrencyCode}

@@ -1,3 +1,9 @@
+export interface AddNewCashAccountPropProps {
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  setshowAddNewForm: React.Dispatch<React.SetStateAction<boolean>>;
+  updatedAllAccountBalances: () => void;
+}
+
 export interface AddANewInvestmentProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setShowAddNewStockForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,6 +14,16 @@ export interface PropertiesNewPropProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setshowAddNewForm: React.Dispatch<React.SetStateAction<boolean>>;
   refreshPropertiesValues: () => void;
+}
+
+export interface AddNewCashAccountFormData {
+  [key: string]: string | number | undefined;
+  account_nickname?: string;
+  account_number_last4_digits?: number;
+  account_owner_name?: string;
+  account_balance?: number;
+  account_currency_code?: string;
+  account_currency_symbol?: string;
 }
 
 export interface AddNewInvestmentFormData {
@@ -45,6 +61,7 @@ export interface cashAccountAPIData {
   account_currency_symbol: string;
   account_id: number;
   account_nickname: string;
+  account_number_last4_digits: number;
   account_owner_name: string;
   userUsersId: number;
   account_balance: number;
@@ -71,6 +88,7 @@ export interface currencyFXAPIData {
 export interface CashAccountsProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
 }
 
 export interface editAccountDetail {
