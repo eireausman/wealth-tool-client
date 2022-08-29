@@ -44,3 +44,65 @@
   font-weight: bolder;
   margin: 2px 4px 0px 0px;
 }
+
+.cashAccountsTable {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 200px;
+  width: 100%;
+  color: white;
+}
+
+.cashAccountsTableHeader {
+  font-weight: bolder;
+  width: calc(100% - 1rem);
+}
+.cashAccountsTableHeader,
+.cashAccountsTableDataGridRow {
+  display: grid;
+  grid-template-columns: 40% repeat(3, 20%);
+}
+
+.cashAccountsTableDataContainer {
+  overflow: auto;
+}
+
+.cashAccountsTableDataGridRow {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  border-bottom: 1px dashed rgb(35, 35, 35);
+}
+
+.cashAccountsTableDataGridRow:hover {
+  background-color: #555;
+  cursor: pointer;
+}
+
+/* width */
+.cashAccountsTableData::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.cashAccountsTableData::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+.cashAccountsTableData::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+.cashAccountsTableData::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.cashAccountsTable > div.table-header {
+  font-weight: 700;
+}
+
+.cashAccountsTable > div {
+  border-bottom: 1px solid black;
+}

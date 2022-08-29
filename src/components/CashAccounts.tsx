@@ -1,37 +1,36 @@
 import React, { useState, useEffect, Fragment } from "react";
 import {
-  cashAccountAPIData,
   CashAccountsProps,
   editAccountDetail,
 } from "../modules/typeInterfaces";
-import { getCashAccountData } from "../modules/serverRequests";
-import CashAccountUpdBal from "./CashAccountUpdBal";
 import { motion } from "framer-motion";
 import "./CashAccounts.css";
-import editIcon from "../assets/images/edit.png";
-import currencyConvert from "../modules/currencyConvert";
 import CardSpinner from "./CardSpinner";
 import getDisplayNumber from "../modules/getDisplayNumber";
 import CashAccountAddAcc from "./CashAccountAddAcc";
+import { cashAccountAPIData } from "../modules/typeInterfaces";
+import { getCashAccountData } from "../modules/serverRequests";
+import currencyConvert from "../modules/currencyConvert";
 
 const CashAccounts: React.FC<CashAccountsProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
   currencyCodesFromDB,
 }) => {
-  const [cashAccountAPIData, setcashAccountAPIData] =
-    useState<Array<cashAccountAPIData>>();
-  const [cashAccountsTotal, setcashAccountsTotal] = useState<number>(0);
   const [accountIDToEdit, setAccountIDToEdit] = useState<number>();
   const [editAccountDetail, seteditAccountDetail] =
     useState<editAccountDetail>();
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
   const [showAddNewForm, setshowAddNewForm] = useState(false);
+  const [cashAccountNetTotal, setcashAccountNetTotal] = useState<number>(0);
+  const [cashAccAPIData, setcashAccAPIData] =
+    useState<Array<cashAccountAPIData>>();
 
   const updatedAllAccountBalances = async () => {
     const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
 
-    let TotalInSelectCurr: number = 0;
+    let netTotalInSelectCur: number = 0;
+
     for (let item of cashAcData) {
       const convertedValue = await currencyConvert(
         item.account_balance,
@@ -40,16 +39,28 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
       );
       item.displayValue = await convertedValue;
 
-      TotalInSelectCurr += item.displayValue;
+      netTotalInSelectCur += convertedValue;
     }
-    setcashAccountsTotal(TotalInSelectCurr);
-    setcashAccountAPIData(cashAcData);
-    setShowSpinner(false);
+    setcashAccAPIData(cashAcData);
+    setcashAccountNetTotal(netTotalInSelectCur);
   };
 
+  // load initial API data
+  // useEffect(() => {
+  //   updatedAllAccountBalances();
+  // }, []);
+
+  //reload API data if currency changes:
   useEffect(() => {
     updatedAllAccountBalances();
   }, [selectedCurrencyCode]);
+
+  // remove the loading status if cash account data populated in state
+  useEffect(() => {
+    if (cashAccAPIData && cashAccAPIData.length !== 0) {
+      setShowSpinner(false);
+    }
+  }, [cashAccAPIData]);
 
   const showAddNewCashAccForm = () => {
     setshowAddNewForm(true);
@@ -74,15 +85,15 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
     seteditAccountDetail(editAccountDetail);
   };
 
+  const closeModal = (e: React.FormEvent<EventTarget>) => {
+    const target = e.target as HTMLElement;
+    if (target.className === "newAdditionModal") {
+      setshowAddNewForm(false);
+    }
+  };
+
   return (
     <section className="viewCard">
-      {showAddNewForm === true && (
-        <CashAccountAddAcc
-          currencyCodesFromDB={currencyCodesFromDB}
-          setshowAddNewForm={setshowAddNewForm}
-          updatedAllAccountBalances={updatedAllAccountBalances}
-        />
-      )}
       {showSpinner === true ? (
         <CardSpinner cardTitle="Cash Accounts" />
       ) : (
@@ -95,19 +106,46 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
           >
             <h3 className="viewCardHeading">CASH ACCOUNTS</h3>
             <h3 className="viewCardTotal">
-              {selectedCurrencySymbol} {getDisplayNumber(cashAccountsTotal)}
+              {selectedCurrencySymbol} {getDisplayNumber(cashAccountNetTotal)}
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className="buttonWhite buttonAddNewEntry"
                 onClick={showAddNewCashAccForm}
               >
-                + Add Stock
+                + Add Account
               </motion.button>
             </h3>
           </motion.div>
-
-          {cashAccountAPIData?.map((data) => (
+          <section className="cashAccountsTable">
+            <header className="cashAccountsTableHeader">
+              <div className="table-header">A/c Name</div>
+              <div className="table-header">Owner</div>
+              <div className="table-header">Balance</div>
+              <div className="table-header">Converted</div>
+            </header>
+            <section className="cashAccountsTableDataContainer">
+              {cashAccAPIData?.map((data, index) => (
+                <Fragment>
+                  <div className="cashAccountsTableDataGridRow">
+                    <div>{data.account_nickname.toUpperCase()}</div>
+                    <div>{data.account_owner_name.toUpperCase()}</div>
+                    <div>
+                      {" "}
+                      {data.account_currency_symbol}{" "}
+                      {getDisplayNumber(data.account_balance)}
+                    </div>
+                    <div>
+                      {" "}
+                      {selectedCurrencySymbol}{" "}
+                      {getDisplayNumber(data.displayValue)}
+                    </div>
+                  </div>
+                </Fragment>
+              ))}
+            </section>
+          </section>
+          {/* {cashAccountAPIData?.map((data) => (
             <motion.div
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -174,8 +212,20 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
                 </Fragment>
               )}
             </motion.div>
-          ))}
+          ))} */}
         </Fragment>
+      )}
+      {showAddNewForm === true && (
+        <div className="newAdditionModal" onClick={(e) => closeModal(e)}>
+          <div className="newAdditionModalInner">
+            {" "}
+            <CashAccountAddAcc
+              currencyCodesFromDB={currencyCodesFromDB}
+              setshowAddNewForm={setshowAddNewForm}
+              updatedAllAccountBalances={updatedAllAccountBalances}
+            />
+          </div>
+        </div>
       )}
     </section>
   );

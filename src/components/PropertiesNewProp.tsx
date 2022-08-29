@@ -63,15 +63,6 @@ const PropertiesNewProp: React.FC<PropertiesNewPropProps> = ({
 
   return (
     <Fragment>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="viewCardHeaderRow"
-      >
-        <h3 className="viewCardHeading">PROPERTIES</h3>
-        <h3 className="viewCardTotal"> Add a new Property</h3>
-      </motion.div>
       <div className="viewCardRow">
         <motion.form
           initial={{ opacity: 0, scale: 0.5 }}

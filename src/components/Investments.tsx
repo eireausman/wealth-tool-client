@@ -1,17 +1,17 @@
 import React, { useState, useEffect, Fragment } from "react";
-import {
-  InvestmentsProps,
-  investmentsAPIData,
-} from "../modules/typeInterfaces";
-import { getInvestmentData } from "../modules/serverRequests";
+import { InvestmentsProps } from "../modules/typeInterfaces";
+
 import { motion } from "framer-motion";
 import CardSpinner from "./CardSpinner";
 import "./Investments.css";
 import editIcon from "../assets/images/edit.png";
-import currencyConvert from "../modules/currencyConvert";
 
 import getDisplayNumber from "../modules/getDisplayNumber";
 import InvestmentAddStock from "./InvestmentAddStock";
+
+import { investmentsAPIData } from "../modules/typeInterfaces";
+import { getInvestmentData } from "../modules/serverRequests";
+import currencyConvert from "../modules/currencyConvert";
 
 const Investments: React.FC<InvestmentsProps> = ({
   selectedCurrencyCode,
@@ -19,16 +19,17 @@ const Investments: React.FC<InvestmentsProps> = ({
   currencyCodesFromDB,
 }) => {
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
-  const [propertiesAPIData, setpropertiesAPIData] =
-    useState<Array<investmentsAPIData>>();
-  const [totalInSelectCur, settotalInSelectCur] = useState<number>();
+
   const [showAddNewStockForm, setShowAddNewStockForm] =
     useState<boolean>(false);
+  const [investmentAPIData, setinvestmentAPIData] =
+    useState<Array<investmentsAPIData>>();
+  const [investmentsTotalValue, setInvestmentsTotalValue] = useState<number>(0);
 
   const refreshInvestmentsData = async () => {
     const investData: Array<investmentsAPIData> = await getInvestmentData();
 
-    let TotalInSelectCurr: number = 0;
+    let netTotalInSelectCur: number = 0;
 
     for (let i = 0; i < investData.length; i += 1) {
       const currentValuePreConversion =
@@ -41,17 +42,29 @@ const Investments: React.FC<InvestmentsProps> = ({
       );
       investData[i].displayValueBaseCurrency = currentValuePreConversion;
       investData[i].displayValueConverted = await convertedValue;
-      TotalInSelectCurr += investData[i].displayValueConverted;
-    }
 
-    settotalInSelectCur(TotalInSelectCurr);
-    setpropertiesAPIData(investData);
-    setShowSpinner(false);
+      netTotalInSelectCur += convertedValue;
+    }
+    setinvestmentAPIData(investData);
+    setInvestmentsTotalValue(netTotalInSelectCur);
   };
 
+  // load initial API data
+  // useEffect(() => {
+  //   refreshInvestmentsData();
+  // }, []);
+
+  //reload API data if currency changes:
   useEffect(() => {
     refreshInvestmentsData();
   }, [selectedCurrencyCode]);
+
+  // remove the loading status if cash account data populated in state
+  useEffect(() => {
+    if (investmentAPIData && investmentAPIData.length !== 0) {
+      setShowSpinner(false);
+    }
+  }, [investmentAPIData]);
 
   const addANewStock = () => {
     setShowAddNewStockForm(true);
@@ -61,17 +74,17 @@ const Investments: React.FC<InvestmentsProps> = ({
     console.log("got here");
   };
 
+  const closeModal = (e: React.FormEvent<EventTarget>) => {
+    const target = e.target as HTMLElement;
+    if (target.className === "newAdditionModal") {
+      setShowAddNewStockForm(false);
+    }
+  };
+
   return (
     <section className="viewCard">
-      {showAddNewStockForm === true && (
-        <InvestmentAddStock
-          currencyCodesFromDB={currencyCodesFromDB}
-          setShowAddNewStockForm={setShowAddNewStockForm}
-          refreshInvestmentsData={refreshInvestmentsData}
-        />
-      )}
       {showSpinner === true ? (
-        <CardSpinner cardTitle="Properties" />
+        <CardSpinner cardTitle="Investments" />
       ) : (
         <Fragment>
           <Fragment>
@@ -84,7 +97,8 @@ const Investments: React.FC<InvestmentsProps> = ({
               <h3 className="viewCardHeading">INVESTMENTS</h3>
               <h3 className="viewCardTotal">
                 {" "}
-                {selectedCurrencySymbol} {getDisplayNumber(totalInSelectCur!)}
+                {selectedCurrencySymbol}{" "}
+                {getDisplayNumber(investmentsTotalValue)}
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -107,7 +121,7 @@ const Investments: React.FC<InvestmentsProps> = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {propertiesAPIData?.map((data) => (
+                  {investmentAPIData?.map((data) => (
                     <tr onClick={updateThisStock} key={data.holding_id}>
                       <td className="columnInWideView">
                         {data.holding_stock_name}
@@ -148,6 +162,17 @@ const Investments: React.FC<InvestmentsProps> = ({
             </div>
           </Fragment>
         </Fragment>
+      )}
+      {showAddNewStockForm === true && (
+        <div className="newAdditionModal" onClick={(e) => closeModal(e)}>
+          <div className="newAdditionModalInner">
+            <InvestmentAddStock
+              currencyCodesFromDB={currencyCodesFromDB}
+              setShowAddNewStockForm={setShowAddNewStockForm}
+              refreshInvestmentsData={refreshInvestmentsData}
+            />
+          </div>
+        </div>
       )}
     </section>
   );

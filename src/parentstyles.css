@@ -5,6 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #161616;
 }
 
 code {
@@ -28,6 +29,25 @@ code {
   color: rgb(26, 24, 21);
 }
 
+.newAdditionModal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(9, 36, 238, 0.781);
+}
+
+.newAdditionModalInner {
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  max-width: 350px;
+}
+
 .viewCardsCascade {
   display: flex;
   flex-direction: row;
@@ -46,6 +66,7 @@ code {
   padding: 10px;
   margin: 20px;
   min-width: 350px;
+  max-width: 760px;
 }
 
 .viewCardHeaderRow {

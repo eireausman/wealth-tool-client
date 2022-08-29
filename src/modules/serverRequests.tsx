@@ -74,9 +74,11 @@ const getCurrencyFXData = async (currencyFrom: string, currencyTo: string) => {
   }
 };
 
-const getPropertiesData = async () => {
+const getPropertiesData = async (selectedCurrency: string) => {
   try {
-    const serverResponse = await axios.get("/api/getpropertiesdata");
+    const serverResponse = await axios.get(
+      `/api/getpropertiesdata?selectedcurrency=${selectedCurrency}`
+    );
     return await serverResponse.data;
   } catch (err) {
     console.error(err);
@@ -106,6 +108,30 @@ const updateCashAccountBalance = async (
       "/api/updatecashaccountbalance",
       formData
     );
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getTotalPosAssets = async (selectedCurrency: string) => {
+  try {
+    const serverResponse = await axios.get(
+      `/api/gettotalposassets?selectedcurrency=${selectedCurrency}`
+    );
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getTotalDebtValue = async (selectedCurrency: string) => {
+  try {
+    const serverResponse = await axios.get(
+      `/api/getdebttotalvalue?selectedcurrency=${selectedCurrency}`
+    );
+
     return await serverResponse.data;
   } catch (err) {
     console.error(err);
@@ -156,4 +182,6 @@ export {
   addnewinvestment,
   addNewProperty,
   addNewCashAccount,
+  getTotalPosAssets,
+  getTotalDebtValue,
 };

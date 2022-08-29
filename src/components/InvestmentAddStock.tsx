@@ -66,15 +66,6 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
 
   return (
     <Fragment>
-      <motion.div
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5 }}
-        className="viewCardHeaderRow"
-      >
-        <h3 className="viewCardHeading">INVESTMENTS</h3>
-        <h3 className="viewCardTotal"> Add a new Investment</h3>
-      </motion.div>
       <div className="viewCardRow">
         <motion.form
           initial={{ opacity: 0, scale: 0.5 }}
@@ -91,6 +82,8 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               className="newStockInputField"
               type="text"
               required
+              minLength={3}
+              maxLength={40}
               onChange={updateFormDataState}
             />
           </label>
@@ -103,6 +96,8 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               className="newStockInputField"
               type="text"
               required
+              minLength={3}
+              maxLength={3}
               onChange={updateFormDataState}
             />
           </label>
@@ -161,6 +156,8 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               className="newStockInputField"
               type="text"
               required
+              minLength={3}
+              maxLength={20}
               onChange={updateFormDataState}
             />
           </label>
@@ -171,6 +168,8 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               className="newStockInputField"
               type="text"
               required
+              minLength={3}
+              maxLength={35}
               onChange={updateFormDataState}
             />
           </label>

@@ -1,5 +1,4 @@
 import { getCurrencyFXData } from "../modules/serverRequests";
-import { currencyFXAPIData } from "../modules/typeInterfaces";
 
 const currencyConvert = async (
   valueFrom: number,

@@ -87,7 +87,6 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
             className="newCashAccInputField"
             type="number"
             required
-            minLength={4}
             maxLength={4}
             onChange={updateFormDataState}
           />

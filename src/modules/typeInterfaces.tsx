@@ -122,7 +122,7 @@ export interface propertiesAPIData {
   property_loan_value: number;
   property_valuation_currency: string;
   property_valuation_curr_symbol: string;
-  displayValue: number;
+  propertyValuationInSelCurr: number;
 }
 
 export interface investmentsAPIData {
@@ -138,6 +138,7 @@ export interface investmentsAPIData {
   holding_stock_name: string;
   holding_quantity_held: number;
   userUsersId: number;
+  virtual_BaseCurrencyValue: number;
   displayValueBaseCurrency: number;
   displayValueConverted: number;
 }
@@ -184,7 +185,35 @@ export interface LoginAttemptServerResponse {
 
 export interface OptionsBoardProps {
   selectedCurrencyCode: string;
+  selectedCurrencySymbol: string;
   setselectedCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setselectedCurrencySymbol: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export interface applicationTotalsState {
+  [key: string]: string | number | object;
+  cashBalances: {
+    cashBalancesTotal: number;
+    cashBalancesNegTotal: number;
+    cashBalancesPosTotal: number;
+  };
+  propVals: {
+    propValsTotal: number;
+    propValsNegTotal: number;
+    propValsPosTotal: number;
+  };
+  InvestmentsVals: {
+    InvestmentsTotal: number;
+    InvestmentsNegTotal: number;
+    InvestmentsPosTotal: number;
+  };
+  wealthSummary: {
+    netWealth: number;
+    totalAssets: number;
+    TotalDebt: number;
+  };
+  cashAccAPIData: Array<cashAccountAPIData>;
+  propertyAccAPIData: Array<propertiesAPIData>;
+  investmentAccAPIData: Array<investmentsAPIData>;
 }

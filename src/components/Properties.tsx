@@ -1,61 +1,60 @@
 import React, { useState, useEffect, Fragment } from "react";
 import {
-  propertiesAPIData,
   PropertiesProps,
   editingPropertyDetails,
 } from "../modules/typeInterfaces";
-import { getPropertiesData } from "../modules/serverRequests";
+
 import { motion } from "framer-motion";
 import CardSpinner from "./CardSpinner";
 import "./Properties.css";
 import editIcon from "../assets/images/edit.png";
-import currencyConvert from "../modules/currencyConvert";
+
 import PropertiesUpdateVal from "./PropertiesUpdateVal";
 import getDisplayNumber from "../modules/getDisplayNumber";
 import PropertiesNewProp from "./PropertiesNewProp";
+import { propertiesAPIData } from "../modules/typeInterfaces";
+import { getPropertiesData } from "../modules/serverRequests";
+import currencyConvert from "../modules/currencyConvert";
 
 const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
   currencyCodesFromDB,
 }) => {
-  const [propertiesAPIData, setPropertiesAPIData] =
-    useState<Array<propertiesAPIData>>();
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
-  const [propertiesConvertedTotal, setpropertiesConvertedTotal] =
-    useState<number>(0);
+
   const [propertyToEdit, setpropertyToEdit] = useState<number>();
   const [editingPropertyDetails, seteditingPropertyDetails] =
     useState<editingPropertyDetails>();
   const [showAddNewForm, setshowAddNewForm] = useState(false);
+  const [propertyAccAPIData, setpropertyAccAPIData] =
+    useState<Array<propertiesAPIData>>();
+  const [netTotalPropValue, setnetTotalPropValue] = useState<number>(0);
 
   const refreshPropertiesValues = async () => {
-    const propData: Array<propertiesAPIData> = await getPropertiesData();
+    const propData: Array<propertiesAPIData> = await getPropertiesData(
+      selectedCurrencyCode
+    );
 
-    let TotalInSelectCurr: number = 0;
-
+    let netTotalInSelectCur: number = 0;
     for (let i = 0; i < propData.length; i += 1) {
-      const netValue =
-        propData[i].property_valuation - propData[i].property_loan_value;
-
-      const convertedValue = await currencyConvert(
-        netValue,
-        propData[i].property_valuation_currency,
-        selectedCurrencyCode
-      );
-
-      propData[i].displayValue = await convertedValue;
-
-      TotalInSelectCurr += propData[i].displayValue;
+      netTotalInSelectCur += propData[i].propertyValuationInSelCurr;
     }
-    setpropertiesConvertedTotal(TotalInSelectCurr);
-    setPropertiesAPIData(propData);
-    setShowSpinner(false);
+    setnetTotalPropValue(netTotalInSelectCur);
+    setpropertyAccAPIData(propData);
   };
 
+  //reload API data if currency changes:
   useEffect(() => {
     refreshPropertiesValues();
   }, [selectedCurrencyCode]);
+
+  // remove the loading status if cash account data populated in state
+  useEffect(() => {
+    if (propertyAccAPIData && propertyAccAPIData.length !== 0) {
+      setShowSpinner(false);
+    }
+  }, [propertyAccAPIData]);
 
   const editThisProperty = (
     property_id: number,
@@ -80,16 +79,15 @@ const Properties: React.FC<PropertiesProps> = ({
     setshowAddNewForm(true);
   };
 
+  const closeModal = (e: React.FormEvent<EventTarget>) => {
+    const target = e.target as HTMLElement;
+    if (target.className === "newAdditionModal") {
+      setshowAddNewForm(false);
+    }
+  };
+
   return (
     <section className="viewCard">
-      {showAddNewForm === true && (
-        <PropertiesNewProp
-          currencyCodesFromDB={currencyCodesFromDB}
-          setshowAddNewForm={setshowAddNewForm}
-          refreshPropertiesValues={refreshPropertiesValues}
-        />
-      )}
-
       <Fragment>
         {showSpinner === true ? (
           <CardSpinner cardTitle="Properties" />
@@ -104,8 +102,7 @@ const Properties: React.FC<PropertiesProps> = ({
               <h3 className="viewCardHeading">PROPERTY</h3>
 
               <h3 className="viewCardTotal">
-                {selectedCurrencySymbol}{" "}
-                {getDisplayNumber(propertiesConvertedTotal)}
+                {selectedCurrencySymbol} {getDisplayNumber(netTotalPropValue)}
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
@@ -116,7 +113,7 @@ const Properties: React.FC<PropertiesProps> = ({
                 </motion.button>
               </h3>
             </motion.div>
-            {propertiesAPIData?.map((data) => (
+            {propertyAccAPIData?.map((data) => (
               <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -172,7 +169,9 @@ const Properties: React.FC<PropertiesProps> = ({
                             <td>Net {selectedCurrencyCode}: </td>
                             <td>
                               {selectedCurrencySymbol}{" "}
-                              {getDisplayNumber(data.displayValue)}
+                              {getDisplayNumber(
+                                data.propertyValuationInSelCurr
+                              )}
                             </td>
                           </tr>
                           <tr>
@@ -209,6 +208,17 @@ const Properties: React.FC<PropertiesProps> = ({
           </Fragment>
         )}
       </Fragment>
+      {showAddNewForm === true && (
+        <div className="newAdditionModal" onClick={(e) => closeModal(e)}>
+          <div className="newAdditionModalInner">
+            <PropertiesNewProp
+              currencyCodesFromDB={currencyCodesFromDB}
+              setshowAddNewForm={setshowAddNewForm}
+              refreshPropertiesValues={refreshPropertiesValues}
+            />
+          </div>
+        </div>
+      )}
     </section>
   );
 };

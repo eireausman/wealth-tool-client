@@ -1,11 +1,9 @@
-import React, { useEffect, Fragment, useState } from "react";
+import React, { useEffect, Fragment, useState, useReducer } from "react";
 import CashAccounts from "./components/CashAccounts";
 import OptionsBoard from "./components/OptionsBoard";
 import Properties from "./components/Properties";
 import { currencyCodesAPIData } from "./modules/typeInterfaces";
 import { getCurrencyCodeData } from "./modules/serverRequests";
-
-import {} from "./modules/serverRequests";
 import ChartExample from "./components/ChartExample";
 import Investments from "./components/Investments";
 
@@ -17,18 +15,19 @@ function App() {
   const [currencyCodesFromDB, setcurrencyCodesFromDB] =
     useState<Array<currencyCodesAPIData>>();
 
-  useEffect(() => {
-    const localStoreCurrencyCode = localStorage.getItem("selectedCurrencyCode");
-    const localStoreCurrencySymbol = localStorage.getItem(
-      "selectedCurrencySymbol"
-    );
-    if (localStoreCurrencyCode !== null) {
-      setselectedCurrencyCode(localStoreCurrencyCode);
-    }
-    if (localStoreCurrencySymbol !== null) {
-      setselectedCurrencySymbol(localStoreCurrencySymbol);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const localStoreCurrencyCode = localStorage.getItem("selectedCurrencyCode");
+  //   const localStoreCurrencySymbol = localStorage.getItem(
+  //     "selectedCurrencySymbol"
+  //   );
+
+  //   if (localStoreCurrencyCode !== null) {
+  //     setselectedCurrencyCode(localStoreCurrencyCode);
+  //   }
+  //   if (localStoreCurrencySymbol !== null) {
+  //     setselectedCurrencySymbol(localStoreCurrencySymbol);
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (currencyCodesFromDB === undefined) {
@@ -44,6 +43,7 @@ function App() {
     <Fragment>
       <OptionsBoard
         selectedCurrencyCode={selectedCurrencyCode}
+        selectedCurrencySymbol={selectedCurrencySymbol}
         setselectedCurrencyCode={setselectedCurrencyCode}
         currencyCodesFromDB={currencyCodesFromDB}
         setselectedCurrencySymbol={setselectedCurrencySymbol}
