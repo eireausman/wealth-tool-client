@@ -1,36 +1,81 @@
 .investmentsTable {
-  border-collapse: collapse;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 200px;
+  width: 900px;
+  background-color: #f0ebeb;
+  border-radius: 10px;
+  padding: 10px;
 }
 
-.investmentsTable > thead > tr > td {
-  font-weight: 600;
-  /* padding: 0px 15px 7px 0px; */
-  border-bottom: 1px dashed rgb(84, 82, 82);
+.investmentsTableHeader {
+  font-weight: bolder;
+  width: calc(100% - 1rem);
 }
-.investmentsTable > tbody > tr > td {
-  /* padding: 4px 15px 4px 0px; */
-  vertical-align: top;
+.investmentsTableHeader,
+.investmentsTableDataGridRow {
+  display: grid;
+  grid-template-columns: 30% repeat(7, 10%);
 }
-.investmentsTable > tbody > tr:hover {
-  background-color: rgb(17, 81, 218);
-  color: white;
+
+.investmentsTableDataContainer {
+  overflow: auto;
+}
+
+.investmentsTableDataGridRow {
+  padding-bottom: 3px;
+  padding-top: 3px;
+  border-bottom: 1px dashed rgb(54, 52, 52);
+}
+
+.investmentsTableDataGridRow:hover {
+  background-color: #cbcdd3;
   cursor: pointer;
 }
 
-.investmentsTable > tbody {
-  font-weight: unset;
-  font-size: 0.9rem;
+/* width */
+.investmentsTableData::-webkit-scrollbar {
+  width: 10px;
 }
 
-tbody:hover:not(:first-child) tr td {
-  /* border-radius: 10px; */
+/* Track */
+.investmentsTableData::-webkit-scrollbar-track {
+  background: #f1f1f1;
 }
 
-.columnInWideView {
+/* Handle */
+.investmentsTableData::-webkit-scrollbar-thumb {
+  background: #888;
 }
 
-.columnNotInNarrowTable {
+/* Handle on hover */
+.investmentsTableData::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
-@media only screen and (max-width: 600px) {
+.investmentsTable > div.table-header {
+  font-weight: 700;
+}
+
+.investmentsTable > div {
+  border-bottom: 1px solid black;
+}
+
+.columnInWideViewOnly {
+  display: inline;
+}
+
+@media only screen and (max-width: 900px) {
+  .investmentsTable {
+    width: 350px;
+  }
+  .investmentsTableHeader,
+  .investmentsTableDataGridRow {
+    display: grid;
+    grid-template-columns: 100px repeat(3, 80px);
+  }
+  .columnInWideViewOnly {
+    display: none;
+  }
 }

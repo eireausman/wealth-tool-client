@@ -10,14 +10,14 @@ const ChartExample = () => {
     useState<Array<cashAccountAPIData>>();
   const [constructedChartData, setconstructedChartData] = useState([]);
 
-  const updatedAllAccountBalances = async () => {
-    const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
+  // const updatedAllAccountBalances = async () => {
+  //   const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
 
-    setcashAccountAPIData(cashAcData);
-  };
+  //   setcashAccountAPIData(cashAcData);
+  // };
 
   useEffect(() => {
-    updatedAllAccountBalances();
+    // updatedAllAccountBalances();
   }, []);
 
   ChartJS.register(ArcElement, Tooltip, Legend);

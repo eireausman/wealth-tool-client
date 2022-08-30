@@ -9,9 +9,9 @@ import Investments from "./components/Investments";
 
 function App() {
   const [selectedCurrencyCode, setselectedCurrencyCode] =
-    useState<string>("GBP");
+    useState<string>("AUD");
   const [selectedCurrencySymbol, setselectedCurrencySymbol] =
-    useState<string>("£");
+    useState<string>("$");
   const [currencyCodesFromDB, setcurrencyCodesFromDB] =
     useState<Array<currencyCodesAPIData>>();
 

@@ -12,6 +12,7 @@ import InvestmentAddStock from "./InvestmentAddStock";
 import { investmentsAPIData } from "../modules/typeInterfaces";
 import { getInvestmentData } from "../modules/serverRequests";
 import currencyConvert from "../modules/currencyConvert";
+import InvestmentsUpdateStock from "./InvestmentsUpdateStock";
 
 const Investments: React.FC<InvestmentsProps> = ({
   selectedCurrencyCode,
@@ -19,15 +20,21 @@ const Investments: React.FC<InvestmentsProps> = ({
   currencyCodesFromDB,
 }) => {
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
-
+  const [stockIDToEdit, setStockIDToEdit] = useState<number>(-1);
   const [showAddNewStockForm, setShowAddNewStockForm] =
     useState<boolean>(false);
   const [investmentAPIData, setinvestmentAPIData] =
     useState<Array<investmentsAPIData>>();
   const [investmentsTotalValue, setInvestmentsTotalValue] = useState<number>(0);
+  const [styleForHoverDiv, setStyleForHoverDiv] = useState<object>({
+    opacity: 0,
+  });
+  const [styleRowID, setstyleRowID] = useState<number>(-1);
 
   const refreshInvestmentsData = async () => {
-    const investData: Array<investmentsAPIData> = await getInvestmentData();
+    const investData: Array<investmentsAPIData> = await getInvestmentData(
+      selectedCurrencyCode
+    );
 
     let netTotalInSelectCur: number = 0;
 
@@ -49,10 +56,9 @@ const Investments: React.FC<InvestmentsProps> = ({
     setInvestmentsTotalValue(netTotalInSelectCur);
   };
 
-  // load initial API data
-  // useEffect(() => {
-  //   refreshInvestmentsData();
-  // }, []);
+  const editStockID = (holding_id: number) => {
+    setStockIDToEdit(holding_id);
+  };
 
   //reload API data if currency changes:
   useEffect(() => {
@@ -68,10 +74,6 @@ const Investments: React.FC<InvestmentsProps> = ({
 
   const addANewStock = () => {
     setShowAddNewStockForm(true);
-  };
-
-  const updateThisStock = () => {
-    console.log("got here");
   };
 
   const closeModal = (e: React.FormEvent<EventTarget>) => {
@@ -109,7 +111,78 @@ const Investments: React.FC<InvestmentsProps> = ({
                 </motion.button>
               </h3>
             </motion.div>
-            <div className="viewCardRow">
+            <section className="investmentsTable">
+              <header className="investmentsTableHeader">
+                <div className="table-header">Holding</div>
+                <div className="table-header columnInWideViewOnly">Owner</div>
+                <div className="table-header columnInWideViewOnly">Held at</div>
+                <div className="table-header columnInWideViewOnly">
+                  Currency
+                </div>
+                <div className="table-header">Quantity</div>
+                <div className="table-header ">Price</div>
+                <div className="table-header columnInWideViewOnly">Cost</div>
+                <div className="table-header">Value</div>
+              </header>
+              <section className="investmentsTableDataContainer">
+                {investmentAPIData?.map((data, index) => (
+                  <Fragment key={data.account_id}>
+                    {stockIDToEdit === data.account_id ? (
+                      <InvestmentsUpdateStock />
+                    ) : (
+                      <div
+                        className="investmentsTableDataGridRow"
+                        onClick={() => editStockID(data.holding_id)}
+                        onMouseEnter={(e) => {
+                          setstyleRowID(data.holding_id);
+                          setStyleForHoverDiv({ opacity: "1" });
+                        }}
+                        onMouseLeave={(e) => {
+                          setStyleForHoverDiv({ opacity: "0" });
+                          setstyleRowID(-1);
+                        }}
+                      >
+                        <div>
+                          {data.holding_stock_name.toUpperCase()}
+                          <img
+                            src={editIcon}
+                            className="editValueIcon"
+                            alt="Edit Value"
+                            style={
+                              styleRowID === data.holding_id
+                                ? styleForHoverDiv
+                                : { opacity: "0" }
+                            }
+                          />
+                        </div>
+                        <div className="columnInWideViewOnly">
+                          {data.holding_owner_name.toUpperCase()}
+                        </div>
+                        <div> {data.holding_institution}</div>
+                        <div className="columnInWideViewOnly">
+                          {" "}
+                          {data.holding_currency_code}
+                        </div>
+                        <div>
+                          {getDisplayNumber(data.holding_quantity_held)}
+                        </div>
+                        <div>
+                          {" "}
+                          {selectedCurrencySymbol}{" "}
+                          {getDisplayNumber(data.holding_current_price)}
+                        </div>
+                        <div className="columnInWideViewOnly">
+                          {" "}
+                          {data.holding_cost_total_value}
+                        </div>
+                        <div> value</div>
+                      </div>
+                    )}
+                  </Fragment>
+                ))}
+              </section>
+            </section>
+            {/* <div className="viewCardRow">
               <table className="investmentsTable">
                 <thead>
                   <tr>
@@ -159,7 +232,7 @@ const Investments: React.FC<InvestmentsProps> = ({
                   ))}
                 </tbody>
               </table>
-            </div>
+            </div> */}
           </Fragment>
         </Fragment>
       )}

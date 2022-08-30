@@ -11,6 +11,8 @@ import CashAccountAddAcc from "./CashAccountAddAcc";
 import { cashAccountAPIData } from "../modules/typeInterfaces";
 import { getCashAccountData } from "../modules/serverRequests";
 import currencyConvert from "../modules/currencyConvert";
+import CashAccountUpdBal from "./CashAccountUpdBal";
+import editIcon from "../assets/images/edit.png";
 
 const CashAccounts: React.FC<CashAccountsProps> = ({
   selectedCurrencyCode,
@@ -23,11 +25,17 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
   const [showAddNewForm, setshowAddNewForm] = useState(false);
   const [cashAccountNetTotal, setcashAccountNetTotal] = useState<number>(0);
+  const [styleForHoverDiv, setStyleForHoverDiv] = useState<object>({
+    opacity: 0,
+  });
+  const [styleRowID, setstyleRowID] = useState<number>(-1);
   const [cashAccAPIData, setcashAccAPIData] =
     useState<Array<cashAccountAPIData>>();
 
   const updatedAllAccountBalances = async () => {
-    const cashAcData: Array<cashAccountAPIData> = await getCashAccountData();
+    const cashAcData: Array<cashAccountAPIData> = await getCashAccountData(
+      selectedCurrencyCode
+    );
 
     let netTotalInSelectCur: number = 0;
 
@@ -126,21 +134,61 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
             </header>
             <section className="cashAccountsTableDataContainer">
               {cashAccAPIData?.map((data, index) => (
-                <Fragment>
-                  <div className="cashAccountsTableDataGridRow">
-                    <div>{data.account_nickname.toUpperCase()}</div>
-                    <div>{data.account_owner_name.toUpperCase()}</div>
-                    <div>
-                      {" "}
-                      {data.account_currency_symbol}{" "}
-                      {getDisplayNumber(data.account_balance)}
+                <Fragment key={data.account_id}>
+                  {accountIDToEdit === data.account_id ? (
+                    <CashAccountUpdBal
+                      setAccountIDToEdit={setAccountIDToEdit}
+                      updatedAllAccountBalances={updatedAllAccountBalances}
+                      editAccountDetail={editAccountDetail!}
+                      seteditAccountDetail={seteditAccountDetail}
+                    />
+                  ) : (
+                    <div
+                      className="cashAccountsTableDataGridRow"
+                      onClick={() =>
+                        editAccountBalance(
+                          data.account_id,
+                          data.account_balance,
+                          data.account_currency_symbol,
+                          data.account_currency_code,
+                          data.account_nickname
+                        )
+                      }
+                      onMouseEnter={(e) => {
+                        setstyleRowID(data.account_id);
+                        setStyleForHoverDiv({ opacity: "1" });
+                      }}
+                      onMouseLeave={(e) => {
+                        setStyleForHoverDiv({ opacity: "0" });
+                        setstyleRowID(-1);
+                      }}
+                    >
+                      <div>
+                        {data.account_nickname.toUpperCase()}
+                        <img
+                          src={editIcon}
+                          className="editValueIcon"
+                          alt="Edit Value"
+                          style={
+                            styleRowID === data.account_id
+                              ? styleForHoverDiv
+                              : { opacity: "0" }
+                          }
+                        />
+                      </div>
+                      <div>{data.account_owner_name.toUpperCase()}</div>
+                      <div>
+                        {" "}
+                        {data.account_currency_symbol}{" "}
+                        {getDisplayNumber(data.account_balance)}
+                      </div>
+                      <div>
+                        {" "}
+                        {selectedCurrencySymbol}{" "}
+                        {getDisplayNumber(data.displayValue)}
+                      </div>
                     </div>
-                    <div>
-                      {" "}
-                      {selectedCurrencySymbol}{" "}
-                      {getDisplayNumber(data.displayValue)}
-                    </div>
-                  </div>
+                  )}
                 </Fragment>
               ))}
             </section>

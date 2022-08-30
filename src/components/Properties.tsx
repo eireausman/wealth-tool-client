@@ -14,7 +14,6 @@ import getDisplayNumber from "../modules/getDisplayNumber";
 import PropertiesNewProp from "./PropertiesNewProp";
 import { propertiesAPIData } from "../modules/typeInterfaces";
 import { getPropertiesData } from "../modules/serverRequests";
-import currencyConvert from "../modules/currencyConvert";
 
 const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
@@ -41,6 +40,7 @@ const Properties: React.FC<PropertiesProps> = ({
       netTotalInSelectCur += propData[i].propertyValuationInSelCurr;
     }
     setnetTotalPropValue(netTotalInSelectCur);
+
     setpropertyAccAPIData(propData);
   };
 

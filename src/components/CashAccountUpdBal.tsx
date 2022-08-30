@@ -66,15 +66,6 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
           onChange={newAccountBalance}
           required
         />
-
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.8 }}
-          className="buttonPrimary buttonCashBalSave"
-          type="submit"
-        >
-          Save
-        </motion.button>
         <motion.button
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.8 }}
@@ -82,6 +73,14 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
           onClick={cancelForm}
         >
           Cancel
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.8 }}
+          className="buttonPrimary buttonCashBalSave"
+          type="submit"
+        >
+          Save
         </motion.button>
       </div>
     </motion.form>

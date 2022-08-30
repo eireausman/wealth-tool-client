@@ -76,6 +76,8 @@ const getCurrencyFXData = async (currencyFrom: string, currencyTo: string) => {
 
 const getPropertiesData = async (selectedCurrency: string) => {
   try {
+    console.log("Server Request Property Data for currency:", selectedCurrency);
+
     const serverResponse = await axios.get(
       `/api/getpropertiesdata?selectedcurrency=${selectedCurrency}`
     );
@@ -85,9 +87,11 @@ const getPropertiesData = async (selectedCurrency: string) => {
   }
 };
 
-const getCashAccountData = async () => {
+const getCashAccountData = async (selectedCurrency: string) => {
   try {
-    const serverResponse = await axios.get("/api/getcashaccountdata");
+    const serverResponse = await axios.get(
+      `/api/getcashaccountdata?selectedcurrency=${selectedCurrency}`
+    );
 
     return await serverResponse.data;
   } catch (err) {
@@ -159,9 +163,11 @@ const updatePropertyValue = async (
   }
 };
 
-const getInvestmentData = async () => {
+const getInvestmentData = async (selectedCurrency: string) => {
   try {
-    const serverResponse = await axios.get("/api/getinvestmentdata");
+    const serverResponse = await axios.get(
+      `/api/getinvestmentdata?selectedcurrency=${selectedCurrency}`
+    );
 
     return await serverResponse.data;
   } catch (err) {
