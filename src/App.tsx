@@ -4,8 +4,9 @@ import OptionsBoard from "./components/OptionsBoard";
 import Properties from "./components/Properties";
 import { currencyCodesAPIData } from "./modules/typeInterfaces";
 import { getCurrencyCodeData } from "./modules/serverRequests";
-import ChartExample from "./components/ChartExample";
+import ChartNetWealthCategories from "./components/ChartNetWealthCategories";
 import Investments from "./components/Investments";
+import FXRates from "./components/FXRates";
 
 function App() {
   const [selectedCurrencyCode, setselectedCurrencyCode] =
@@ -49,22 +50,25 @@ function App() {
         setselectedCurrencySymbol={setselectedCurrencySymbol}
       />
       <div className="viewCardsCascade">
-        <Properties
-          selectedCurrencyCode={selectedCurrencyCode}
-          selectedCurrencySymbol={selectedCurrencySymbol}
-          currencyCodesFromDB={currencyCodesFromDB}
-        />
-        <CashAccounts
-          selectedCurrencyCode={selectedCurrencyCode}
-          selectedCurrencySymbol={selectedCurrencySymbol}
-          currencyCodesFromDB={currencyCodesFromDB}
-        />
+        <ChartNetWealthCategories selectedCurrencyCode={selectedCurrencyCode} />
         <Investments
           selectedCurrencyCode={selectedCurrencyCode}
           selectedCurrencySymbol={selectedCurrencySymbol}
           currencyCodesFromDB={currencyCodesFromDB}
         />
-        <ChartExample />
+        <FXRates />
+
+        <Properties
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
+        />
+
+        <CashAccounts
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
+        />
       </div>
     </Fragment>
   );

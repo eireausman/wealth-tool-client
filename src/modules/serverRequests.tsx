@@ -60,6 +60,15 @@ const getCurrencyCodeData = async () => {
   }
 };
 
+const getAllFXRateData = async () => {
+  try {
+    const serverResponse = await axios.get("/api/getallfxrates");
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 const getCurrencyFXData = async (currencyFrom: string, currencyTo: string) => {
   const formData = {
     currencyFrom,
@@ -91,6 +100,42 @@ const getCashAccountData = async (selectedCurrency: string) => {
   try {
     const serverResponse = await axios.get(
       `/api/getcashaccountdata?selectedcurrency=${selectedCurrency}`
+    );
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getNetCashAccountTotal = async (selectedCurrency: string) => {
+  try {
+    const serverResponse = await axios.get(
+      `/api/getcashaccountnettotal?selectedcurrency=${selectedCurrency}`
+    );
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getNetPropertyTotal = async (selectedCurrency: string) => {
+  try {
+    const serverResponse = await axios.get(
+      `/api/getpropertynettotal?selectedcurrency=${selectedCurrency}`
+    );
+
+    return await serverResponse.data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const getNetInvestmentTotal = async (selectedCurrency: string) => {
+  try {
+    const serverResponse = await axios.get(
+      `/api/getinvestmentsnettotal?selectedcurrency=${selectedCurrency}`
     );
 
     return await serverResponse.data;
@@ -190,4 +235,8 @@ export {
   addNewCashAccount,
   getTotalPosAssets,
   getTotalDebtValue,
+  getAllFXRateData,
+  getNetCashAccountTotal,
+  getNetPropertyTotal,
+  getNetInvestmentTotal,
 };

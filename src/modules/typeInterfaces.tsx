@@ -55,6 +55,10 @@ export interface createAccountFormData {
   password?: string;
 }
 
+export interface ChartNetWealthCategoriesProps {
+  selectedCurrencyCode: string;
+}
+
 export interface cashAccountAPIData {
   [key: string]: string | number | undefined;
   account_currency_code: string;
@@ -66,6 +70,15 @@ export interface cashAccountAPIData {
   userUsersId: number;
   account_balance: number;
   displayValue: number;
+}
+
+export interface allFXRatesAPIData {
+  [key: string]: string | number | undefined;
+  id: number;
+  currency_code_from: string;
+  currency_code_to: string;
+  currency_fxrate: number;
+  currency_fxrate_dateupdated: string;
 }
 
 export interface currencyCodesAPIData {
@@ -216,4 +229,8 @@ export interface applicationTotalsState {
   cashAccAPIData: Array<cashAccountAPIData>;
   propertyAccAPIData: Array<propertiesAPIData>;
   investmentAccAPIData: Array<investmentsAPIData>;
+}
+
+export interface fxRatesProps {
+  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
 }

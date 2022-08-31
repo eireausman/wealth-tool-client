@@ -5,6 +5,7 @@ import {
   getTotalDebtValue,
 } from "../modules/serverRequests";
 import "./OptionsBoard.css";
+import getDisplayNumber from "../modules/getDisplayNumber";
 
 const OptionsBoard: React.FC<OptionsBoardProps> = ({
   selectedCurrencyCode: selectedCurrency,
@@ -13,9 +14,9 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
   currencyCodesFromDB,
   setselectedCurrencySymbol,
 }) => {
-  const [totalDebtValue, settotalDebtValue] = useState<number>();
-  const [netWealthValue, setnetWealthValue] = useState<number>();
-  const [totalPosAssets, settotalPosAssets] = useState<number>();
+  const [totalDebtValue, settotalDebtValue] = useState<number>(0);
+  const [netWealthValue, setnetWealthValue] = useState<number>(0);
+  const [totalPosAssets, settotalPosAssets] = useState<number>(0);
   const setCurrency = (e: React.FormEvent<EventTarget>) => {
     const target = e.target as HTMLSelectElement;
 
@@ -47,30 +48,21 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
     return totalDebtInteger;
   };
 
-  useEffect(() => {
+  const getCalculatedNetWealth = async () => {
     Promise.all([getValueTotalPosAssets(), getValueTotalDeb()]).then((data) => {
+      console.log(data);
+
       const calculatedNetWealth = data[0] + data[1];
       setnetWealthValue(calculatedNetWealth);
     });
-  }, [selectedCurrency]);
+  };
 
-  console.log();
+  useEffect(() => {
+    getCalculatedNetWealth();
+  }, [selectedCurrency]);
 
   return (
     <div className="optionsBoard">
-      <div className="wealthSummary">
-        <div className="totalAssetBox">
-          <b>Net Wealth</b> {selectedCurrencySymbol}
-          {netWealthValue}
-        </div>{" "}
-        <div className="totalAssetBox">
-          <b>Total Assets</b> <span>{totalPosAssets}</span>
-        </div>
-        <div className="totalAssetBox">
-          <b>Total Debt </b>
-          <span>{totalDebtValue}</span>
-        </div>
-      </div>
       <label htmlFor="Currency">
         Show values in:{" "}
         <select
@@ -78,6 +70,7 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
           id="Currency"
           onChange={setCurrency}
           value={selectedCurrency}
+          className="currencySelectElement"
         >
           {currencyCodesFromDB?.map((data) => (
             <option key={data.id} value={data.currency_code}>
@@ -86,6 +79,47 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
           ))}
         </select>
       </label>
+      <div className="wealthSummary">
+        <div className="totalAssetBox">
+          <b>Net Wealth</b>{" "}
+          <span
+            className={
+              netWealthValue < 0
+                ? "optionsBoardNegative"
+                : "optionsBoardPositive"
+            }
+          >
+            {selectedCurrencySymbol}
+            {getDisplayNumber(netWealthValue)}
+          </span>
+        </div>{" "}
+        <div className="totalAssetBox">
+          <b>Total Assets</b>{" "}
+          <span
+            className={
+              totalPosAssets < 0
+                ? "optionsBoardNegative"
+                : "optionsBoardPositive"
+            }
+          >
+            {selectedCurrencySymbol}
+            {getDisplayNumber(totalPosAssets)}
+          </span>
+        </div>
+        <div className="totalAssetBox">
+          <b>Total Debt </b>
+          <span
+            className={
+              totalDebtValue < 0
+                ? "optionsBoardNegative"
+                : "optionsBoardPositive"
+            }
+          >
+            {selectedCurrencySymbol}
+            {getDisplayNumber(totalDebtValue)}
+          </span>
+        </div>
+      </div>
     </div>
   );
 };
