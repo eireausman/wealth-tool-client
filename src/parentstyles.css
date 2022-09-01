@@ -21,12 +21,16 @@ code {
 
 .alertFailure {
   background-color: palevioletred;
-  color: bisque;
+  color: white;
+  border: 1px solid rgb(239, 91, 140);
+  border-radius: 3px;
 }
 
 .alertSuccess {
   background-color: rgb(114, 213, 127);
   color: rgb(26, 24, 21);
+  border: 1px solid rgb(56, 213, 17);
+  border-radius: 3px;
 }
 
 .newAdditionModal {

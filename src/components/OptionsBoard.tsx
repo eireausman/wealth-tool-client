@@ -3,9 +3,12 @@ import { OptionsBoardProps } from "../modules/typeInterfaces";
 import {
   getTotalPosAssets,
   getTotalDebtValue,
+  logUserOut,
 } from "../modules/serverRequests";
 import "./OptionsBoard.css";
 import getDisplayNumber from "../modules/getDisplayNumber";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const OptionsBoard: React.FC<OptionsBoardProps> = ({
   selectedCurrencyCode: selectedCurrency,
@@ -13,10 +16,14 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
   setselectedCurrencyCode,
   currencyCodesFromDB,
   setselectedCurrencySymbol,
+  loggedInUser,
+  setloggedInUser,
+  triggerRecalculations,
 }) => {
   const [totalDebtValue, settotalDebtValue] = useState<number>(0);
   const [netWealthValue, setnetWealthValue] = useState<number>(0);
   const [totalPosAssets, settotalPosAssets] = useState<number>(0);
+
   const setCurrency = (e: React.FormEvent<EventTarget>) => {
     const target = e.target as HTMLSelectElement;
 
@@ -28,6 +35,13 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
         localStorage.setItem("selectedCurrencySymbol", item.currency_symbol);
       }
     });
+  };
+
+  const navigate = useNavigate();
+  const performLogoutAction = async () => {
+    await logUserOut(); // errors handled in serverRequest file
+    setloggedInUser(false);
+    navigate("/login");
   };
 
   const getValueTotalPosAssets = async () => {
@@ -59,7 +73,7 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
 
   useEffect(() => {
     getCalculatedNetWealth();
-  }, [selectedCurrency]);
+  }, [selectedCurrency, triggerRecalculations]);
 
   return (
     <div className="optionsBoard">
@@ -120,6 +134,27 @@ const OptionsBoard: React.FC<OptionsBoardProps> = ({
           </span>
         </div>
       </div>
+
+      {loggedInUser === undefined ? (
+        <div className="loginBox">
+          <div className="loginBoxLink">
+            <Link to="/login">Login</Link>
+          </div>
+          <div className="loginBoxLink">
+            <Link to="/createaccount">Create Account</Link>
+          </div>{" "}
+        </div>
+      ) : (
+        <motion.div
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          className="loginBox"
+        >
+          <div className="loginBoxLink" onClick={performLogoutAction}>
+            Logout ({loggedInUser})
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };

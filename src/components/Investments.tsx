@@ -18,6 +18,8 @@ const Investments: React.FC<InvestmentsProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
   currencyCodesFromDB,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
   const [stockIDToEdit, setStockIDToEdit] = useState<number>(-1);
@@ -243,6 +245,8 @@ const Investments: React.FC<InvestmentsProps> = ({
               currencyCodesFromDB={currencyCodesFromDB}
               setShowAddNewStockForm={setShowAddNewStockForm}
               refreshInvestmentsData={refreshInvestmentsData}
+              settriggerRecalculations={settriggerRecalculations}
+              triggerRecalculations={triggerRecalculations}
             />
           </div>
         </div>

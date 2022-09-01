@@ -24,6 +24,24 @@ const addNewCashAccount = async (formData: AddNewCashAccountFormData) => {
   }
 };
 
+const logUserOut = async () => {
+  try {
+    const serverResponse = await axios.get("/api/logout");
+    return await serverResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const checkifuserloggedin = async () => {
+  try {
+    const serverResponse = await axios.get("/api/isuserloggedin");
+    return await serverResponse.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const addNewProperty = async (formData: AddNewPropertyFormData) => {
   try {
     const serverResponse = await axios.post("/api/addnewproperty", formData);
@@ -85,8 +103,6 @@ const getCurrencyFXData = async (currencyFrom: string, currencyTo: string) => {
 
 const getPropertiesData = async (selectedCurrency: string) => {
   try {
-    console.log("Server Request Property Data for currency:", selectedCurrency);
-
     const serverResponse = await axios.get(
       `/api/getpropertiesdata?selectedcurrency=${selectedCurrency}`
     );
@@ -239,4 +255,6 @@ export {
   getNetCashAccountTotal,
   getNetPropertyTotal,
   getNetInvestmentTotal,
+  checkifuserloggedin,
+  logUserOut,
 };

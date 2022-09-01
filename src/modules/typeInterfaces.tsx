@@ -2,18 +2,24 @@ export interface AddNewCashAccountPropProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setshowAddNewForm: React.Dispatch<React.SetStateAction<boolean>>;
   updatedAllAccountBalances: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface AddANewInvestmentProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setShowAddNewStockForm: React.Dispatch<React.SetStateAction<boolean>>;
   refreshInvestmentsData: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface PropertiesNewPropProps {
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setshowAddNewForm: React.Dispatch<React.SetStateAction<boolean>>;
   refreshPropertiesValues: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface AddNewCashAccountFormData {
@@ -57,6 +63,7 @@ export interface createAccountFormData {
 
 export interface ChartNetWealthCategoriesProps {
   selectedCurrencyCode: string;
+  triggerRecalculations: number;
 }
 
 export interface cashAccountAPIData {
@@ -102,6 +109,8 @@ export interface CashAccountsProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface editAccountDetail {
@@ -116,6 +125,8 @@ export interface InvestmentsProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface editingPropertyDetails {
@@ -160,6 +171,8 @@ export interface PropertiesProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface propertiesUpdateValProps {
@@ -169,6 +182,8 @@ export interface propertiesUpdateValProps {
     React.SetStateAction<editingPropertyDetails | undefined>
   >;
   refreshPropertiesValues: () => Promise<void>;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface CashAccountUpdateBalProps {
@@ -178,6 +193,8 @@ export interface CashAccountUpdateBalProps {
   seteditAccountDetail: React.Dispatch<
     React.SetStateAction<editAccountDetail | undefined>
   >;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
 }
 
 export interface LoginAttemptFormData {
@@ -202,6 +219,9 @@ export interface OptionsBoardProps {
   setselectedCurrencyCode: React.Dispatch<React.SetStateAction<string>>;
   currencyCodesFromDB: currencyCodesAPIData[] | undefined;
   setselectedCurrencySymbol: React.Dispatch<React.SetStateAction<string>>;
+  loggedInUser: string | false;
+  setloggedInUser: React.Dispatch<React.SetStateAction<string | false>>;
+  triggerRecalculations: number;
 }
 
 export interface applicationTotalsState {
@@ -231,6 +251,4 @@ export interface applicationTotalsState {
   investmentAccAPIData: Array<investmentsAPIData>;
 }
 
-export interface fxRatesProps {
-  currencyCodesFromDB: currencyCodesAPIData[] | undefined;
-}
+export interface fxRatesProps {}

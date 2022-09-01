@@ -10,6 +10,8 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
   currencyCodesFromDB,
   setshowAddNewForm,
   updatedAllAccountBalances,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [formData, setformData] = useState<AddNewCashAccountFormData>();
   const currencyCodeSelection = useRef<HTMLSelectElement | null>(null);
@@ -54,6 +56,7 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
     addNewCashAccount(formDataForSubmission)
       .then((data) => {
         console.log(data);
+        settriggerRecalculations(triggerRecalculations + 1);
         updatedAllAccountBalances();
         setshowAddNewForm(false);
       })

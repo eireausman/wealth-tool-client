@@ -11,6 +11,8 @@ const PropertiesNewProp: React.FC<PropertiesNewPropProps> = ({
   currencyCodesFromDB,
   setshowAddNewForm,
   refreshPropertiesValues,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [formData, setformData] = useState<AddNewPropertyFormData>();
   const currencyCodeSelection = useRef<HTMLSelectElement | null>(null);
@@ -55,6 +57,7 @@ const PropertiesNewProp: React.FC<PropertiesNewPropProps> = ({
     addNewProperty(formDataForSubmission)
       .then((data) => {
         console.log(data);
+        settriggerRecalculations(triggerRecalculations + 1);
         refreshPropertiesValues();
         setshowAddNewForm(false);
       })

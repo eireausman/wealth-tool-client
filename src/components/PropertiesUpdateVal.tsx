@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { propertiesUpdateValProps } from "../modules/typeInterfaces";
 import { motion } from "framer-motion";
 import "./PropertiesUpdateVal.css";
-import { LanguageVariant, ListFormat } from "typescript";
+
 import { updatePropertyValue } from "../modules/serverRequests";
 
 const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
@@ -10,6 +10,8 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
   editingPropertyDetails,
   seteditingPropertyDetails,
   refreshPropertiesValues,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [newPropValue, setNewPropValue] = useState<number>(
     editingPropertyDetails!.property_valuation
@@ -30,6 +32,8 @@ const PropertiesUpdateVal: React.FC<propertiesUpdateValProps> = ({
       editingPropertyDetails!.property_loan_value
     )
       .then((data) => {
+        settriggerRecalculations(triggerRecalculations + 1);
+
         refreshPropertiesValues();
         setpropertyToEdit(-1);
       })

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getCashAccountData } from "../modules/serverRequests";
+
 import {
   getNetCashAccountTotal,
   getNetPropertyTotal,
@@ -12,6 +12,7 @@ import "./ChartNetWealthCategories.css";
 
 const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
   selectedCurrencyCode,
+  triggerRecalculations,
 }) => {
   const [constructedChartData, setconstructedChartData] = useState<
     Array<number>
@@ -30,7 +31,7 @@ const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
 
   useEffect(() => {
     getChartDataFromDB();
-  }, []);
+  }, [triggerRecalculations]);
 
   ChartJS.register(ArcElement, Tooltip, Legend);
 

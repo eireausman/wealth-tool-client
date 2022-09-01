@@ -1,3 +1,25 @@
-.spinnerText {
+.spinnerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
   color: white;
+}
+
+.spinnerText {
+  width: 350px;
+  text-align: center;
+}
+.spinIcon {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
 }

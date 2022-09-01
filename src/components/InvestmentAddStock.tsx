@@ -11,6 +11,8 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
   currencyCodesFromDB,
   setShowAddNewStockForm,
   refreshInvestmentsData,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [formData, setformData] = useState<AddNewInvestmentFormData>();
   const currencyCodeSelection = useRef<HTMLSelectElement | null>(null);
@@ -58,6 +60,7 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
     addnewinvestment(formDataForSubmission)
       .then((data) => {
         console.log(data);
+        settriggerRecalculations(triggerRecalculations + 1);
         refreshInvestmentsData();
         setShowAddNewStockForm(false);
       })

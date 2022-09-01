@@ -31,17 +31,16 @@
   gap: 30px;
 }
 
-.item-enter {
-  opacity: 0;
+.loginBox {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  color: black;
+  padding: 5px;
+  border-radius: 5px;
+  gap: 10px;
 }
-.item-enter-active {
-  opacity: 1;
-  transition: opacity 1000ms ease-in;
-}
-.item-exit {
-  opacity: 1;
-}
-.item-exit-active {
-  opacity: 0;
-  transition: opacity 1000ms ease-in;
+
+.loginBoxLink {
+  cursor: pointer;
 }

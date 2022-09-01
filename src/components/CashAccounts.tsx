@@ -18,6 +18,8 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
   currencyCodesFromDB,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [accountIDToEdit, setAccountIDToEdit] = useState<number>();
   const [editAccountDetail, seteditAccountDetail] =
@@ -52,11 +54,6 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
     setcashAccAPIData(cashAcData);
     setcashAccountNetTotal(netTotalInSelectCur);
   };
-
-  // load initial API data
-  // useEffect(() => {
-  //   updatedAllAccountBalances();
-  // }, []);
 
   //reload API data if currency changes:
   useEffect(() => {
@@ -141,6 +138,8 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
                       updatedAllAccountBalances={updatedAllAccountBalances}
                       editAccountDetail={editAccountDetail!}
                       seteditAccountDetail={seteditAccountDetail}
+                      settriggerRecalculations={settriggerRecalculations}
+                      triggerRecalculations={triggerRecalculations}
                     />
                   ) : (
                     <div
@@ -271,6 +270,8 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
               currencyCodesFromDB={currencyCodesFromDB}
               setshowAddNewForm={setshowAddNewForm}
               updatedAllAccountBalances={updatedAllAccountBalances}
+              settriggerRecalculations={settriggerRecalculations}
+              triggerRecalculations={triggerRecalculations}
             />
           </div>
         </div>

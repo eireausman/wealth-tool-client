@@ -19,6 +19,8 @@ const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
   selectedCurrencySymbol,
   currencyCodesFromDB,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   const [showSpinner, setShowSpinner] = useState<boolean>(true);
 
@@ -127,6 +129,8 @@ const Properties: React.FC<PropertiesProps> = ({
                     editingPropertyDetails={editingPropertyDetails}
                     seteditingPropertyDetails={seteditingPropertyDetails}
                     refreshPropertiesValues={refreshPropertiesValues}
+                    settriggerRecalculations={settriggerRecalculations}
+                    triggerRecalculations={triggerRecalculations}
                   />
                 ) : (
                   <Fragment>
@@ -215,6 +219,8 @@ const Properties: React.FC<PropertiesProps> = ({
               currencyCodesFromDB={currencyCodesFromDB}
               setshowAddNewForm={setshowAddNewForm}
               refreshPropertiesValues={refreshPropertiesValues}
+              settriggerRecalculations={settriggerRecalculations}
+              triggerRecalculations={triggerRecalculations}
             />
           </div>
         </div>

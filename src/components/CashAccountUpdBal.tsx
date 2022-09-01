@@ -9,6 +9,8 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
   updatedAllAccountBalances,
   editAccountDetail,
   seteditAccountDetail,
+  settriggerRecalculations,
+  triggerRecalculations,
 }) => {
   useEffect(() => {
     newAccountBalanceInputBox.current !== null &&
@@ -33,12 +35,14 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
 
   const saveNewAccountBalance = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
+
     updateCashAccountBalance(
       editAccountDetail.account_id!,
       editAccountDetail.account_balance!
     )
       .then((data) => {
         updatedAllAccountBalances();
+        settriggerRecalculations(triggerRecalculations + 1);
         setAccountIDToEdit(-1);
       })
       .catch((err) => console.log(err));

@@ -16,7 +16,7 @@
 .FXRatesTableHeader,
 .FXRatesTableDataGridRow {
   display: grid;
-  grid-template-columns: 100px repeat(2, 100px);
+  grid-template-columns: 90px repeat(2, 90px);
 }
 
 .FXRatesTableDataContainer {
@@ -27,6 +27,7 @@
   padding-bottom: 3px;
   padding-top: 3px;
   border-bottom: 1px dashed rgb(54, 52, 52);
+  font-size: 0.9rem;
 }
 
 .FXRatesTableDataGridRow:hover {
