@@ -16,6 +16,7 @@ import {
 } from "../modules/serverRequests";
 
 import InvestmentsUpdateStock from "./InvestmentsUpdateStock";
+import InvestmentRow from "./InvestmentRow";
 
 const Investments: React.FC<InvestmentsProps> = ({
   selectedCurrencyCode,
@@ -79,151 +80,49 @@ const Investments: React.FC<InvestmentsProps> = ({
         <CardSpinner cardTitle="Investments" />
       ) : (
         <Fragment>
-          <Fragment>
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5 }}
-              className="viewCardHeaderRow"
-            >
-              <h3 className="viewCardHeading">INVESTMENTS</h3>
-              <h3 className="viewCardTotal">
-                {" "}
-                {selectedCurrencySymbol}{" "}
-                {getDisplayNumber(investmentsTotalValue)}
-                <motion.button
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className="buttonWhite buttonAddNewEntry"
-                  onClick={addANewStock}
-                >
-                  + Add Stock
-                </motion.button>
-              </h3>
-            </motion.div>
-            <section className="investmentsTable">
-              <header className="investmentsTableHeader">
-                <div className="table-header">Holding</div>
-                <div className="table-header columnInWideViewOnly">Owner</div>
-                <div className="table-header columnInWideViewOnly">Held at</div>
-                <div className="table-header columnInWideViewOnly">
-                  Currency
-                </div>
-                <div className="table-header">Quantity</div>
-                <div className="table-header ">Price</div>
-                <div className="table-header columnInWideViewOnly">Cost</div>
-                <div className="table-header">Value</div>
-              </header>
-              <section className="investmentsTableDataContainer">
-                {investmentAPIData?.map((data, index) => (
-                  <Fragment key={data.account_id}>
-                    {stockIDToEdit === data.account_id ? (
-                      <InvestmentsUpdateStock />
-                    ) : (
-                      <div
-                        className="investmentsTableDataGridRow"
-                        onClick={() => editStockID(data.holding_id)}
-                        onMouseEnter={(e) => {
-                          setstyleRowID(data.holding_id);
-                          setStyleForHoverDiv({ opacity: "1" });
-                        }}
-                        onMouseLeave={(e) => {
-                          setStyleForHoverDiv({ opacity: "0" });
-                          setstyleRowID(-1);
-                        }}
-                      >
-                        <div>
-                          {data.holding_stock_name.toUpperCase()}
-                          <img
-                            src={editIcon}
-                            className="editValueIcon"
-                            alt="Edit Value"
-                            style={
-                              styleRowID === data.holding_id
-                                ? styleForHoverDiv
-                                : { opacity: "0" }
-                            }
-                          />
-                        </div>
-                        <div className="columnInWideViewOnly">
-                          {data.holding_owner_name.toUpperCase()}
-                        </div>
-                        <div> {data.holding_institution}</div>
-                        <div className="columnInWideViewOnly">
-                          {" "}
-                          {data.holding_currency_code}
-                        </div>
-                        <div>
-                          {getDisplayNumber(data.holding_quantity_held)}
-                        </div>
-                        <div>
-                          {" "}
-                          {selectedCurrencySymbol}{" "}
-                          {getDisplayNumber(data.holding_current_price)}
-                        </div>
-                        <div className="columnInWideViewOnly">
-                          {" "}
-                          {data.holding_cost_total_value}
-                        </div>
-                        <div> {data.investmentConvertedValue}</div>
-                      </div>
-                    )}
-                  </Fragment>
-                ))}
-              </section>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="viewCardHeaderRow"
+          >
+            <h3 className="viewCardHeading">INVESTMENTS</h3>
+            <h3 className="viewCardTotal">
+              {" "}
+              {selectedCurrencySymbol} {getDisplayNumber(investmentsTotalValue)}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="buttonWhite buttonAddNewEntry"
+                onClick={addANewStock}
+              >
+                + Add Stock
+              </motion.button>
+            </h3>
+          </motion.div>
+          <section className="investmentsTable">
+            <header className="investmentsTableHeader">
+              <div className="table-header">Holding</div>
+              <div className="table-header columnInWideViewOnly">Owner</div>
+              <div className="table-header columnInWideViewOnly">Held at</div>
+              <div className="table-header columnInWideViewOnly">Currency</div>
+              <div className="table-header">Quantity</div>
+              <div className="table-header ">Price</div>
+              <div className="table-header columnInWideViewOnly">Cost</div>
+              <div className="table-header">Value</div>
+            </header>
+            <section className="investmentsTableDataContainer">
+              {investmentAPIData?.map((data, index) => (
+                <InvestmentRow
+                  data={data}
+                  selectedCurrencySymbol={selectedCurrencySymbol}
+                  refreshInvestmentsData={refreshInvestmentsData}
+                  settriggerRecalculations={settriggerRecalculations}
+                  triggerRecalculations={triggerRecalculations}
+                />
+              ))}
             </section>
-            {/* <div className="viewCardRow">
-              <table className="investmentsTable">
-                <thead>
-                  <tr>
-                    <td className="columnInWideView">HOLDING NAME</td>
-                    <td className="columnInWideView">OWNER</td>
-                    <td className="columnNotInNarrowTable"> QUANTITY</td>
-                    <td className="columnNotInNarrowTable"> PRICE</td>
-                    <td className="columnInWideView">VALUE</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  {investmentAPIData?.map((data) => (
-                    <tr onClick={updateThisStock} key={data.holding_id}>
-                      <td className="columnInWideView">
-                        {data.holding_stock_name}
-                      </td>
-                      <td className="columnInWideView">
-                        {data.holding_owner_name}
-                      </td>
-
-                      <td className="columnNotInNarrowTable">
-                        {" "}
-                        {data.holding_quantity_held}
-                      </td>
-                      <td className="columnNotInNarrowTable">
-                        {" "}
-                        {data.holding_current_price}
-                      </td>
-                      <td className="columnInWideView">
-                        {data.displayValueConverted !==
-                        data.displayValueBaseCurrency ? (
-                          <div>
-                            {selectedCurrencySymbol}{" "}
-                            {getDisplayNumber(data.displayValueConverted)}
-                            <br />
-                            {data.holding_currency_symbol}{" "}
-                            {getDisplayNumber(data.displayValueBaseCurrency)}
-                          </div>
-                        ) : (
-                          <div>
-                            {selectedCurrencySymbol}{" "}
-                            {getDisplayNumber(data.displayValueConverted)}
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div> */}
-          </Fragment>
+          </section>
         </Fragment>
       )}
       {showAddNewStockForm === true && (

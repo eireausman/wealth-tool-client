@@ -187,6 +187,14 @@ export interface CashAccountUpdateBalProps {
   triggerRecalculations: number;
 }
 
+export interface InvestmentsUpdateStockProps {
+  data: investmentsAPIData;
+  setshowEditStockForm: React.Dispatch<React.SetStateAction<boolean>>;
+  refreshInvestmentsData: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
+}
+
 export interface LoginAttemptFormData {
   [key: string]: string | undefined;
   username?: string;
@@ -222,4 +230,10 @@ export interface CashAccountAccRowProps {
   triggerRecalculations: number;
 }
 
-// setShowEditAccountForm: React.Dispatch<React.SetStateAction<boolean>>;
+export interface InvestmentRowProps {
+  data: investmentsAPIData;
+  selectedCurrencySymbol: string;
+  refreshInvestmentsData: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
+}

@@ -11,7 +11,6 @@ import {
   getNetCashAccountTotal,
 } from "../modules/serverRequests";
 
-import CashAccountUpdBal from "./CashAccountUpdBal";
 import CashAccountAccRow from "./CashAccountAccRow";
 
 const CashAccounts: React.FC<CashAccountsProps> = ({
