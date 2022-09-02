@@ -13,7 +13,10 @@ import PropertiesUpdateVal from "./PropertiesUpdateVal";
 import getDisplayNumber from "../modules/getDisplayNumber";
 import PropertiesNewProp from "./PropertiesNewProp";
 import { propertiesAPIData } from "../modules/typeInterfaces";
-import { getPropertiesData } from "../modules/serverRequests";
+import {
+  getPropertiesData,
+  getNetPropertyTotal,
+} from "../modules/serverRequests";
 
 const Properties: React.FC<PropertiesProps> = ({
   selectedCurrencyCode,
@@ -36,14 +39,10 @@ const Properties: React.FC<PropertiesProps> = ({
     const propData: Array<propertiesAPIData> = await getPropertiesData(
       selectedCurrencyCode
     );
-
-    let netTotalInSelectCur: number = 0;
-    for (let i = 0; i < propData.length; i += 1) {
-      netTotalInSelectCur += propData[i].propertyValuationInSelCurr;
-    }
-    setnetTotalPropValue(netTotalInSelectCur);
-
     setpropertyAccAPIData(propData);
+
+    const total = await getNetPropertyTotal(selectedCurrencyCode);
+    setnetTotalPropValue(total);
   };
 
   //reload API data if currency changes:

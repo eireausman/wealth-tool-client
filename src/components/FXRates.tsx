@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { allFXRatesAPIData, fxRatesProps } from "../modules/typeInterfaces";
+import { allFXRatesAPIData } from "../modules/typeInterfaces";
 import { getAllFXRateData } from "../modules/serverRequests";
 import "./FXRates.css";
 import { motion } from "framer-motion";
 
-const FXRates: React.FC<fxRatesProps> = () => {
+const FXRates: React.FC = () => {
   const [allFXRatesAPIData, setallFXRatesAPIData] =
     useState<Array<allFXRatesAPIData>>();
   useEffect(() => {

@@ -114,14 +114,6 @@ export interface CashAccountsProps {
   triggerRecalculations: number;
 }
 
-export interface editAccountDetail {
-  account_id: number;
-  account_balance: number;
-  currencySymbol: string;
-  currencyCode: string;
-  account_nickname: string;
-}
-
 export interface InvestmentsProps {
   selectedCurrencyCode: string;
   selectedCurrencySymbol: string;
@@ -188,12 +180,9 @@ export interface propertiesUpdateValProps {
 }
 
 export interface CashAccountUpdateBalProps {
-  setAccountIDToEdit: React.Dispatch<React.SetStateAction<number | undefined>>;
+  data: cashAccountAPIData;
+  setShowEditAccountForm: React.Dispatch<React.SetStateAction<boolean>>;
   updatedAllAccountBalances: () => void;
-  editAccountDetail: editAccountDetail;
-  seteditAccountDetail: React.Dispatch<
-    React.SetStateAction<editAccountDetail | undefined>
-  >;
   settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
   triggerRecalculations: number;
 }
@@ -225,4 +214,12 @@ export interface OptionsBoardProps {
   triggerRecalculations: number;
 }
 
-export interface fxRatesProps {}
+export interface CashAccountAccRowProps {
+  data: cashAccountAPIData;
+  selectedCurrencySymbol: string;
+  updatedAllAccountBalances: () => void;
+  settriggerRecalculations: React.Dispatch<React.SetStateAction<number>>;
+  triggerRecalculations: number;
+}
+
+// setShowEditAccountForm: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,34 +1,36 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { updateCashAccountBalance } from "../modules/serverRequests";
 import { CashAccountUpdateBalProps } from "../modules/typeInterfaces";
 import "./CashAccountUpdBal.css";
 import { motion } from "framer-motion";
 
 const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
-  setAccountIDToEdit,
+  data,
+  setShowEditAccountForm,
   updatedAllAccountBalances,
-  editAccountDetail,
-  seteditAccountDetail,
   settriggerRecalculations,
   triggerRecalculations,
 }) => {
+  const [updatedBalance, setupdatedBalance] = useState<number>(0);
+
   useEffect(() => {
     newAccountBalanceInputBox.current !== null &&
       newAccountBalanceInputBox.current.focus();
   }, []);
 
+  useEffect(() => {
+    setupdatedBalance(data.account_balance);
+  }, [data]);
+
   const newAccountBalance = (e: React.FormEvent<EventTarget>) => {
-    console.log();
     const target = e.target as HTMLInputElement;
     const number = parseInt(target.value);
-    const editAccountDetailCopy = { ...editAccountDetail };
-    editAccountDetailCopy.account_balance = number;
-    seteditAccountDetail(editAccountDetailCopy);
+    setupdatedBalance(number);
   };
 
   const cancelForm = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    setAccountIDToEdit(-1);
+    setShowEditAccountForm(false);
   };
 
   const newAccountBalanceInputBox = useRef<HTMLInputElement | null>(null);
@@ -36,58 +38,55 @@ const CashAccountUpdBal: React.FC<CashAccountUpdateBalProps> = ({
   const saveNewAccountBalance = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
 
-    updateCashAccountBalance(
-      editAccountDetail.account_id!,
-      editAccountDetail.account_balance!
-    )
+    updateCashAccountBalance(data.account_id, updatedBalance)
       .then((data) => {
         updatedAllAccountBalances();
         settriggerRecalculations(triggerRecalculations + 1);
-        setAccountIDToEdit(-1);
+        setShowEditAccountForm(false);
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <motion.form
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5 }}
-      className="editAccountBalForm"
-      onSubmit={saveNewAccountBalance}
-    >
-      <span className="accountNickname">
-        {editAccountDetail.account_nickname}
-      </span>
-      <div className="currencySymbolWrapper">
-        {editAccountDetail.currencySymbol}
-        <input
-          name="newAccountBalanceInputBox"
-          className="newAccountBalanceInputBox"
-          type="number"
-          ref={newAccountBalanceInputBox}
-          value={editAccountDetail.account_balance}
-          onChange={newAccountBalance}
-          required
-        />
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.8 }}
-          className="buttonPrimary buttonCashBalSave"
-          onClick={cancelForm}
-        >
-          Cancel
-        </motion.button>
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.8 }}
-          className="buttonPrimary buttonCashBalSave"
-          type="submit"
-        >
-          Save
-        </motion.button>
-      </div>
-    </motion.form>
+    <div className="viewCardRow">
+      <motion.form
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="editAccountBalForm"
+        onSubmit={saveNewAccountBalance}
+      >
+        <span className="accountNickname">{data.account_nickname}</span>
+        <div className="currencySymbolWrapper">
+          {data.currencySymbol}
+          <input
+            name="newAccountBalanceInputBox"
+            className="newAccountBalanceInputBox"
+            type="number"
+            ref={newAccountBalanceInputBox}
+            value={updatedBalance}
+            onChange={newAccountBalance}
+            required
+          />
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.8 }}
+            className="buttonPrimary buttonCashBalSave"
+            onClick={cancelForm}
+          >
+            Cancel
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.8 }}
+            className="buttonPrimary buttonCashBalSave"
+            type="submit"
+          >
+            Save
+          </motion.button>
+        </div>
+      </motion.form>
+    </div>
   );
 };
 

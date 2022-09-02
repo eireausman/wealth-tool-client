@@ -7,7 +7,7 @@ import {
 } from "../modules/serverRequests";
 import "./OptionsBoard.css";
 import getDisplayNumber from "../modules/getDisplayNumber";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const OptionsBoard: React.FC<OptionsBoardProps> = ({

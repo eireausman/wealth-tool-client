@@ -10,8 +10,11 @@ import getDisplayNumber from "../modules/getDisplayNumber";
 import InvestmentAddStock from "./InvestmentAddStock";
 
 import { investmentsAPIData } from "../modules/typeInterfaces";
-import { getInvestmentData } from "../modules/serverRequests";
-import currencyConvert from "../modules/currencyConvert";
+import {
+  getInvestmentData,
+  getNetInvestmentTotal,
+} from "../modules/serverRequests";
+
 import InvestmentsUpdateStock from "./InvestmentsUpdateStock";
 
 const Investments: React.FC<InvestmentsProps> = ({
@@ -37,11 +40,10 @@ const Investments: React.FC<InvestmentsProps> = ({
     const investData: Array<investmentsAPIData> = await getInvestmentData(
       selectedCurrencyCode
     );
-
-    let netTotalInSelectCur: number = 0;
-
     setinvestmentAPIData(investData);
-    setInvestmentsTotalValue(netTotalInSelectCur);
+
+    const total = await getNetInvestmentTotal(selectedCurrencyCode);
+    setInvestmentsTotalValue(total);
   };
 
   const editStockID = (holding_id: number) => {
