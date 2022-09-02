@@ -40,20 +40,6 @@ const Investments: React.FC<InvestmentsProps> = ({
 
     let netTotalInSelectCur: number = 0;
 
-    for (let i = 0; i < investData.length; i += 1) {
-      const currentValuePreConversion =
-        investData[i].holding_quantity_held *
-        investData[i].holding_current_price;
-      const convertedValue = await currencyConvert(
-        currentValuePreConversion,
-        investData[i].holding_currency_code,
-        selectedCurrencyCode
-      );
-      investData[i].displayValueBaseCurrency = currentValuePreConversion;
-      investData[i].displayValueConverted = await convertedValue;
-
-      netTotalInSelectCur += convertedValue;
-    }
     setinvestmentAPIData(investData);
     setInvestmentsTotalValue(netTotalInSelectCur);
   };
@@ -177,7 +163,7 @@ const Investments: React.FC<InvestmentsProps> = ({
                           {" "}
                           {data.holding_cost_total_value}
                         </div>
-                        <div> value</div>
+                        <div> {data.investmentConvertedValue}</div>
                       </div>
                     )}
                   </Fragment>

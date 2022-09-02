@@ -27,7 +27,7 @@ function App() {
     checkifuserloggedin().then((data) => {
       console.log(data);
 
-      if (data === false) {
+      if (data === false || data === undefined) {
         navigate("/login");
       }
       setloggedInUser(data); // username or undefined if not logged in

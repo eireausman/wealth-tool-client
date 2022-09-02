@@ -76,7 +76,7 @@ export interface cashAccountAPIData {
   account_owner_name: string;
   userUsersId: number;
   account_balance: number;
-  displayValue: number;
+  accountBalConvertedValue: number;
 }
 
 export interface allFXRatesAPIData {
@@ -86,6 +86,7 @@ export interface allFXRatesAPIData {
   currency_code_to: string;
   currency_fxrate: number;
   currency_fxrate_dateupdated: string;
+  virtual_lastUpdatedDay: string;
 }
 
 export interface currencyCodesAPIData {
@@ -222,33 +223,6 @@ export interface OptionsBoardProps {
   loggedInUser: string | false;
   setloggedInUser: React.Dispatch<React.SetStateAction<string | false>>;
   triggerRecalculations: number;
-}
-
-export interface applicationTotalsState {
-  [key: string]: string | number | object;
-  cashBalances: {
-    cashBalancesTotal: number;
-    cashBalancesNegTotal: number;
-    cashBalancesPosTotal: number;
-  };
-  propVals: {
-    propValsTotal: number;
-    propValsNegTotal: number;
-    propValsPosTotal: number;
-  };
-  InvestmentsVals: {
-    InvestmentsTotal: number;
-    InvestmentsNegTotal: number;
-    InvestmentsPosTotal: number;
-  };
-  wealthSummary: {
-    netWealth: number;
-    totalAssets: number;
-    TotalDebt: number;
-  };
-  cashAccAPIData: Array<cashAccountAPIData>;
-  propertyAccAPIData: Array<propertiesAPIData>;
-  investmentAccAPIData: Array<investmentsAPIData>;
 }
 
 export interface fxRatesProps {}

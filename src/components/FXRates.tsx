@@ -35,7 +35,7 @@ const FXRates: React.FC<fxRatesProps> = () => {
               <div>
                 {data.currency_code_from} / {data.currency_code_to}
               </div>
-              <div>{data.currency_fxrate_dateupdated}</div>
+              <div>{data.virtual_lastUpdatedDay}</div>
               <div>{data.currency_fxrate}</div>
             </div>
           ))}

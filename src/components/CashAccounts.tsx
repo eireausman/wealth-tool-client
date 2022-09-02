@@ -41,16 +41,16 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
 
     let netTotalInSelectCur: number = 0;
 
-    for (let item of cashAcData) {
-      const convertedValue = await currencyConvert(
-        item.account_balance,
-        item.account_currency_code,
-        selectedCurrencyCode
-      );
-      item.displayValue = await convertedValue;
+    // for (let item of cashAcData) {
+    //   const convertedValue = await currencyConvert(
+    //     item.account_balance,
+    //     item.account_currency_code,
+    //     selectedCurrencyCode
+    //   );
+    //   item.displayValue = await convertedValue;
 
-      netTotalInSelectCur += convertedValue;
-    }
+    //   netTotalInSelectCur += convertedValue;
+    // }
     setcashAccAPIData(cashAcData);
     setcashAccountNetTotal(netTotalInSelectCur);
   };
@@ -184,7 +184,7 @@ const CashAccounts: React.FC<CashAccountsProps> = ({
                       <div>
                         {" "}
                         {selectedCurrencySymbol}{" "}
-                        {getDisplayNumber(data.displayValue)}
+                        {getDisplayNumber(data.accountBalConvertedValue)}
                       </div>
                     </div>
                   )}
