@@ -4,11 +4,11 @@ import { USERNAMEMIN, PASSWORDMIN } from "../modules/publicEnvVariables";
 import {
   createAccountFormData,
   createAccountServerResponse,
-} from "../modules/typeInterfaces";
+} from "../../../types/typeInterfaces";
 import { createAccountAttempt } from "../modules/serverRequests";
 import { motion } from "framer-motion";
 import "./CreateAccount.css";
-import CardSpinner from "./CardSpinner";
+import CardSpinner from "../components/CardSpinner";
 
 const CreateAccount: React.FC = () => {
   const [formData, setFormData] = useState<createAccountFormData>({

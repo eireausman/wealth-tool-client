@@ -2,7 +2,7 @@ import { motion, Target } from "framer-motion";
 import React, { Fragment, useState } from "react";
 import editIcon from "../assets/images/edit.png";
 import getDisplayNumber from "../modules/getDisplayNumber";
-import { CashAccountAccRowProps } from "../modules/typeInterfaces";
+import { CashAccountAccRowProps } from "../../../types/typeInterfaces";
 import CashAccountUpdBal from "./CashAccountUpdBal";
 
 const CashAccountAccRow: React.FC<CashAccountAccRowProps> = ({

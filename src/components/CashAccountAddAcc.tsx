@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useRef } from "react";
+
 import { motion } from "framer-motion";
 import {
   AddNewCashAccountPropProps,
   AddNewCashAccountFormData,
-} from "../modules/typeInterfaces";
+} from "../../../types/typeInterfaces";
 import "./CashAccountAddAcc.css";
 import { addNewCashAccount } from "../modules/serverRequests";
 const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
@@ -29,6 +30,13 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
       target.getAttribute("name") ??
       (target.getAttribute("name") as keyof typeof formData);
 
+    if (
+      fieldName === "account_number_last4_digits" &&
+      target.value.length > 4
+    ) {
+      console.log("greate than 4 digits");
+      return;
+    }
     formDataCopy[fieldName] = target.value;
     setformData(formDataCopy);
   };
@@ -80,9 +88,11 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
             className="newCashAccInputField"
             type="text"
             required
+            value={formData?.account_nickname}
             onChange={updateFormDataState}
           />
         </label>
+
         <label className="newCashAccInputRow">
           Account number last 4 digits
           <input
@@ -90,10 +100,12 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
             className="newCashAccInputField"
             type="number"
             required
-            maxLength={4}
+            max={9999}
+            value={formData?.account_number_last4_digits}
             onChange={updateFormDataState}
           />
         </label>
+
         <label className="newCashAccInputRow">
           Owner's Name
           <input
@@ -101,6 +113,7 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
             className="newCashAccInputField"
             type="text"
             required
+            value={formData?.account_owner_name}
             onChange={updateFormDataState}
           />
         </label>
@@ -112,6 +125,7 @@ const CashAccountAddAcc: React.FC<AddNewCashAccountPropProps> = ({
             className="newCashAccInputField"
             type="number"
             required
+            value={formData?.account_balance}
             onChange={updateFormDataState}
           />
         </label>

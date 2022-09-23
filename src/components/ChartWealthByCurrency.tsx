@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   getNetCashAccountTotal,
@@ -17,7 +17,6 @@ const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
   const [constructedChartData, setconstructedChartData] = useState<
     Array<number>
   >([]);
-  const noAssets = useRef<boolean>(false);
 
   const getChartDataFromDB = async () => {
     const PropertyValue = await getNetPropertyTotal(selectedCurrencyCode);
@@ -28,18 +27,10 @@ const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
       CashAccountValue,
       InvestmentsValue,
     ]);
-    noAssets.current = false;
-    if (
-      PropertyValue === "" &&
-      CashAccountValue === "" &&
-      InvestmentsValue === ""
-    ) {
-      noAssets.current = true;
-    }
   };
 
   useEffect(() => {
-    getChartDataFromDB();
+    // getChartDataFromDB();
   }, [triggerRecalculations, selectedCurrencyCode]);
 
   ChartJS.register(ArcElement, Tooltip, Legend);
@@ -49,7 +40,7 @@ const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
 
     datasets: [
       {
-        label: `Proportion of Net Wealth`,
+        label: `Wealth By Currency`,
         data: constructedChartData,
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
@@ -70,9 +61,6 @@ const ChartNetWealthCategories: React.FC<ChartNetWealthCategoriesProps> = ({
     responsive: true,
   };
 
-  if (noAssets.current === true) {
-    return null;
-  }
   return (
     <section className="viewCard">
       <span className="chartTitle"> NET WEALTH BREAKDOWN</span>

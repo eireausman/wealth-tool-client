@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import {
   PropertiesNewPropProps,
   AddNewPropertyFormData,
-} from "../modules/typeInterfaces";
+} from "../../../types/typeInterfaces";
 import "./PropertiesNewProp.css";
 import { addNewProperty } from "../modules/serverRequests";
 

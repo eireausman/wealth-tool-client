@@ -1,9 +1,11 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { InvestmentRowProps } from "../modules/typeInterfaces";
+import { InvestmentRowProps } from "../../../types/typeInterfaces";
 import editIcon from "../assets/images/edit.png";
 import getDisplayNumber from "../modules/getDisplayNumber";
 import InvestmentsUpdateStock from "./InvestmentsUpdateStock";
 import { motion } from "framer-motion";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 
 const InvestmentRow: React.FC<InvestmentRowProps> = ({
   data,
@@ -58,22 +60,44 @@ const InvestmentRow: React.FC<InvestmentRowProps> = ({
         <div className="columnInWideViewOnly">
           {data.holding_owner_name.toUpperCase()}
         </div>
-        <div> {data.holding_institution}</div>
+        <div className="columnInWideViewOnly"> {data.holding_institution}</div>
         <div className="columnInWideViewOnly">
           {" "}
           {data.holding_currency_code}
         </div>
         <div>{getDisplayNumber(data.holding_quantity_held)}</div>
-        <div>
-          {" "}
-          {selectedCurrencySymbol}{" "}
-          {getDisplayNumber(data.holding_current_price)}
+        <div className="columnInWideViewOnly">
+          <Tippy
+            content={
+              <span>
+                {parseFloat(
+                  (
+                    parseFloat(
+                      data.investment_price_histories[0].holding_current_price
+                    ) / 100
+                  ).toFixed(6)
+                ).toPrecision()}
+              </span>
+            }
+          >
+            <div>
+              {getDisplayNumber(
+                parseFloat(
+                  data.investment_price_histories[0].holding_current_price
+                ) / 100
+              )}
+            </div>
+          </Tippy>
         </div>
+
         <div className="columnInWideViewOnly">
           {" "}
           {data.holding_cost_total_value}
         </div>
-        <div> {data.investmentConvertedValue}</div>
+        <div>
+          {selectedCurrencySymbol}{" "}
+          {getDisplayNumber(data.investmentConvertedValue)}
+        </div>
       </motion.div>
       {showEditStockForm === true && (
         <div className="newAdditionModal" onClick={(e) => closeModal(e)}>

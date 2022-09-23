@@ -2,8 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./parentstyles.css";
-import CreateAccount from "./components/CreateAccount";
-import Login from "./components/Login";
+import CreateAccount from "./pages/CreateAccount";
+import Login from "./pages/Login";
 import App from "./App";
 
 const root = ReactDOM.createRoot(

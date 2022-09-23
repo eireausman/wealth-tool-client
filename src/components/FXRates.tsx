@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { allFXRatesAPIData } from "../modules/typeInterfaces";
+import { allFXRatesAPIData } from "../../../types/typeInterfaces";
 import { getAllFXRateData } from "../modules/serverRequests";
 import "./FXRates.css";
 import { motion } from "framer-motion";
@@ -29,9 +29,9 @@ const FXRates: React.FC = () => {
           <div className="table-header">As At</div>
           <div className="table-header">Rate</div>
         </header>
-        <section className="FXRatesTableDataContainer">
+        <section className="FXRatesTableDataContainer scrollbarstyles">
           {allFXRatesAPIData?.map((data) => (
-            <div className="FXRatesTableDataGridRow">
+            <div className="FXRatesTableDataGridRow" key={data.id}>
               <div>
                 {data.currency_code_from} / {data.currency_code_to}
               </div>

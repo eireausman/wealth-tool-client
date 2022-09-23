@@ -4,11 +4,11 @@ import { USERNAMEMIN, PASSWORDMIN } from "../modules/publicEnvVariables";
 import {
   LoginAttemptFormData,
   LoginAttemptServerResponse,
-} from "../modules/typeInterfaces";
+} from "../../../types/typeInterfaces";
 import { loginAttempt } from "../modules/serverRequests";
 import { motion } from "framer-motion";
 import "./Login.css";
-import CardSpinner from "./CardSpinner";
+import CardSpinner from "../components/CardSpinner";
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<LoginAttemptFormData>({

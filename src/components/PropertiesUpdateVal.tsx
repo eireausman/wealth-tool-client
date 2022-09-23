@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { propertiesUpdateValProps } from "../modules/typeInterfaces";
+import { propertiesUpdateValProps } from "../../../types/typeInterfaces";
 import { motion } from "framer-motion";
 import "./PropertiesUpdateVal.css";
 

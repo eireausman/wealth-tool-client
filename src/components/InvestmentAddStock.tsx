@@ -1,11 +1,13 @@
-import React, { Fragment, useState, useRef } from "react";
+import React, { Fragment, useState } from "react";
 import { motion } from "framer-motion";
+import { companyNameSearchResults } from "../../../types/typeInterfaces";
 import {
   AddANewInvestmentProps,
   AddNewInvestmentFormData,
-} from "../modules/typeInterfaces";
+} from "../../../types/typeInterfaces";
 import "./InvestmentAddStock.css";
 import { addnewinvestment } from "../modules/serverRequests";
+import InvestmentAddStockName from "./InvestmentAddStockName";
 
 const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
   currencyCodesFromDB,
@@ -15,11 +17,31 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
   triggerRecalculations,
 }) => {
   const [formData, setformData] = useState<AddNewInvestmentFormData>();
-  const currencyCodeSelection = useRef<HTMLSelectElement | null>(null);
 
   const cancelForm = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
     setShowAddNewStockForm(false);
+  };
+
+  const newStockNameSelectedFromSearch = (
+    selectedCompany: companyNameSearchResults
+  ) => {
+    const formDataCopy: AddNewInvestmentFormData = { ...formData };
+    formDataCopy.stockName = selectedCompany.company_name;
+    formDataCopy.identifier = selectedCompany.company_symbol;
+    formDataCopy.currencyCode =
+      selectedCompany.stock_market.currencies_code.currency_code;
+    formDataCopy.stockMarket = selectedCompany.stock_market.exchange_name;
+    setformData(formDataCopy);
+  };
+
+  const resetCompanyFormData = () => {
+    const formDataCopy: AddNewInvestmentFormData = { ...formData };
+    formDataCopy.stockName = undefined;
+    formDataCopy.identifier = undefined;
+    formDataCopy.currencyCode = undefined;
+    formDataCopy.stockMarket = undefined;
+    setformData(formDataCopy);
   };
 
   const updateFormDataState = (e: React.FormEvent<EventTarget>) => {
@@ -36,35 +58,17 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
 
   const saveNewInvestment = (e: React.FormEvent<EventTarget>) => {
     e.preventDefault();
-    // figure out the currency symbol to add to the db
-    const currencyCodeForSubmission = currencyCodeSelection.current!.value;
-    let currencySymbolForSubmission = "";
-    currencyCodesFromDB?.forEach((currencyEntry) => {
-      if (currencyEntry.currency_code === currencyCodeForSubmission) {
-        currencySymbolForSubmission = currencyEntry.currency_symbol;
-      }
-    });
 
-    const formDataForSubmission = {
-      stockName: formData?.stockName,
-      identifier: formData?.identifier,
-      quantity: formData?.quantity,
-      currencyCode: currencyCodeForSubmission,
-      currencySymbol: currencySymbolForSubmission,
-      currentPrice: formData?.currentPrice,
-      ownerName: formData?.ownerName,
-      institution: formData?.institution,
-      cost: formData?.cost,
-    };
-
-    addnewinvestment(formDataForSubmission)
-      .then((data) => {
-        console.log(data);
-        settriggerRecalculations(triggerRecalculations + 1);
-        refreshInvestmentsData();
-        setShowAddNewStockForm(false);
-      })
-      .catch((err) => console.log(err));
+    if (formData) {
+      addnewinvestment(formData)
+        .then((data) => {
+          console.log(data);
+          settriggerRecalculations(triggerRecalculations + 1);
+          refreshInvestmentsData();
+          setShowAddNewStockForm(false);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   return (
@@ -78,32 +82,14 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
           onSubmit={(e) => saveNewInvestment(e)}
         >
           <span className="addNewStockFormHeading">Stock detail</span>
-          <label className="newStockInputRow">
-            Stock Name
-            <input
-              name="stockName"
-              className="newStockInputField"
-              type="text"
-              required
-              minLength={3}
-              maxLength={40}
-              onChange={updateFormDataState}
-            />
-          </label>
 
-          <label className="newStockInputRow">
-            Stock Identifier
-            <input
-              name="identifier"
-              placeholder="e.g. ASX"
-              className="newStockInputField"
-              type="text"
-              required
-              minLength={3}
-              maxLength={3}
-              onChange={updateFormDataState}
-            />
-          </label>
+          <InvestmentAddStockName
+            updateFormDataState={updateFormDataState}
+            newStockNameSelectedFromSearch={newStockNameSelectedFromSearch}
+            formData={formData}
+            resetCompanyFormData={resetCompanyFormData}
+          />
+
           <label className="newStockInputRow">
             Quantity Held
             <input
@@ -114,38 +100,11 @@ const InvestmentAddStock: React.FC<AddANewInvestmentProps> = ({
               onChange={updateFormDataState}
             />
           </label>
-          <label className="newStockInputRow">
-            Stock Currency
-            <select
-              className="newStockInputField"
-              name="currencyCode"
-              id="currencyCode"
-              ref={currencyCodeSelection}
-              onChange={updateFormDataState}
-            >
-              {currencyCodesFromDB?.map((data) => (
-                <option key={data.id} value={data.currency_code}>
-                  {data.currency_name}
-                </option>
-              ))}
-            </select>
-          </label>
 
           <label className="newStockInputRow">
-            Total cost
+            Total cost {formData?.currencyCode}
             <input
               name="cost"
-              className="newStockInputField"
-              type="number"
-              required
-              onChange={updateFormDataState}
-            />
-          </label>
-          <label className="newStockInputRow">
-            Current Price
-            <input
-              name="currentPrice"
-              placeholder="e.g. 159c or 159p"
               className="newStockInputField"
               type="number"
               required

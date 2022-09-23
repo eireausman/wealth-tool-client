@@ -2,7 +2,7 @@ import React, { useEffect, Fragment, useState } from "react";
 import CashAccounts from "./components/CashAccounts";
 import OptionsBoard from "./components/OptionsBoard";
 import Properties from "./components/Properties";
-import { currencyCodesAPIData } from "./modules/typeInterfaces";
+import { currencyCodesAPIData } from "../../types/typeInterfaces";
 import {
   checkifuserloggedin,
   getCurrencyCodeData,
@@ -25,28 +25,12 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     checkifuserloggedin().then((data) => {
-      console.log(data);
-
       if (data === false || data === undefined) {
         navigate("/login");
       }
       setloggedInUser(data); // username or undefined if not logged in
     });
   }, []);
-
-  // useEffect(() => {
-  //   const localStoreCurrencyCode = localStorage.getItem("selectedCurrencyCode");
-  //   const localStoreCurrencySymbol = localStorage.getItem(
-  //     "selectedCurrencySymbol"
-  //   );
-
-  //   if (localStoreCurrencyCode !== null) {
-  //     setselectedCurrencyCode(localStoreCurrencyCode);
-  //   }
-  //   if (localStoreCurrencySymbol !== null) {
-  //     setselectedCurrencySymbol(localStoreCurrencySymbol);
-  //   }
-  // }, []);
 
   useEffect(() => {
     if (currencyCodesFromDB === undefined) {
@@ -71,8 +55,18 @@ function App() {
         triggerRecalculations={triggerRecalculations}
       />
       <div className="viewCardsCascade">
-        <ChartNetWealthCategories
+        <CashAccounts
           selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
+          settriggerRecalculations={settriggerRecalculations}
+          triggerRecalculations={triggerRecalculations}
+        />
+        <Properties
+          selectedCurrencyCode={selectedCurrencyCode}
+          selectedCurrencySymbol={selectedCurrencySymbol}
+          currencyCodesFromDB={currencyCodesFromDB}
+          settriggerRecalculations={settriggerRecalculations}
           triggerRecalculations={triggerRecalculations}
         />
         <Investments
@@ -82,23 +76,12 @@ function App() {
           settriggerRecalculations={settriggerRecalculations}
           triggerRecalculations={triggerRecalculations}
         />
+        <ChartNetWealthCategories
+          selectedCurrencyCode={selectedCurrencyCode}
+          triggerRecalculations={triggerRecalculations}
+        />
+
         <FXRates />
-
-        <Properties
-          selectedCurrencyCode={selectedCurrencyCode}
-          selectedCurrencySymbol={selectedCurrencySymbol}
-          currencyCodesFromDB={currencyCodesFromDB}
-          settriggerRecalculations={settriggerRecalculations}
-          triggerRecalculations={triggerRecalculations}
-        />
-
-        <CashAccounts
-          selectedCurrencyCode={selectedCurrencyCode}
-          selectedCurrencySymbol={selectedCurrencySymbol}
-          currencyCodesFromDB={currencyCodesFromDB}
-          settriggerRecalculations={settriggerRecalculations}
-          triggerRecalculations={triggerRecalculations}
-        />
       </div>
     </Fragment>
   );
